@@ -11,11 +11,9 @@ const Home: NextPage = () => {
         <meta name='description' content='Share mechanical switches' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <Box h={'100vh'} w={'100%'}>
-        <Header />
+      <Header />
 
-        <Landing />
-      </Box>
+      <Landing />
     </>
   );
 };

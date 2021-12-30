@@ -6,8 +6,17 @@ interface Props {}
 
 function Landing({}: Props): ReactElement {
   return (
-    <Flex justifyContent={'center'} alignItems={'center'} h='50%' mt='10'>
+    <Flex
+      justifyContent={'center'}
+      alignItems={'center'}
+      h='80%'
+      // mt='8'
+      flexDir={'column'}
+      overflowY={'scroll'}
+      zIndex={1}
+    >
       {/* <Heading>Impress</Heading> */}
+      <Card />
       <Card />
     </Flex>
   );

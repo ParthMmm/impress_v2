@@ -12,31 +12,34 @@ import {
   Link,
   useColorMode,
 } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import Title from './Title';
 interface Props {}
 
 function Header({}: Props): ReactElement {
+  const router = useRouter();
+  const { colorMode } = useColorMode();
+
   return (
-    <Flex w={'full'}>
+    <Flex
+      w={'full'}
+      pos={'sticky'}
+      bg={colorMode === 'light' ? 'white' : 'black'}
+      top={0}
+      zIndex={2}
+    >
       <Flex
         alignItems='center'
         justifyContent='space-between'
-        // maxW='1250px'
-        mx={'24'}
-        // mx='0 auto'
+        mx={'12rem'}
         w='full'
-        px={5}
         h='12vh'
         borderBottom='5px solid '
       >
-        <Heading
-          _hover={{ color: 'blue.400' }}
-          transition={'color ease-in-out 0.2s'}
-        >
-          impress
-        </Heading>
+        <Title fontSize={48} />
         <ButtonGroup>
-          <Button>log in</Button>
-          <Button>get started</Button>
+          <Button onClick={() => router.push('/login')}>log in</Button>
+          <Button onClick={() => router.push('/register')}>get started</Button>
         </ButtonGroup>
       </Flex>
     </Flex>
