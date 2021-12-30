@@ -11,6 +11,9 @@ const styles = {
     body: {
       color: mode('black', 'white')(props),
       bg: mode('white', 'black')(props),
+
+      transitionProperty: 'background-color',
+      transitionDuration: 'normal',
     },
   }),
 };
