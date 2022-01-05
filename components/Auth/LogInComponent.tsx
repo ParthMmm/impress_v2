@@ -1,21 +1,21 @@
 import React, { ReactElement } from 'react';
+import Title from '../Title';
 import {
   Flex,
-  Text,
   Heading,
   Box,
-  Tag,
   Button,
-  ButtonGroup,
-  HStack,
   Input,
   FormControl,
   VStack,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import * as Yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { gql, useMutation } from '@apollo/client';
-import Title from '../Title';
+
+// import { Magic } from 'magic-sdk';
+// const m = new Magic(`${process.env.NEXT_PUBLIC_API_KEY}`);
 
 interface Props {}
 
@@ -24,16 +24,21 @@ interface FormValues {
   password: string;
 }
 
-const SIGN_UP = gql`
+const validationSchema = Yup.object().shape({
+  username: Yup.string().required('required'),
+  password: Yup.string().required('required'),
+});
+
+const LOG_IN = gql`
   mutation Mutation($username: String, $password: String) {
-    signUp(username: $username, password: $password) {
+    logIn(username: $username, password: $password) {
       username
     }
   }
 `;
 
-function SignUp({}: Props): ReactElement {
-  const [signUp, { data, loading, error }] = useMutation(SIGN_UP);
+function LogIn({}: Props): ReactElement {
+  const [logIn, { data, loading, error }] = useMutation(LOG_IN);
 
   const {
     register,
@@ -41,12 +46,14 @@ function SignUp({}: Props): ReactElement {
     reset,
     formState: { errors },
   } = useForm({
-    // resolver: yupResolver(validationSchema),
+    resolver: yupResolver(validationSchema),
   });
+
+  console.log({ data }, { loading }, { error });
 
   const onSubmit = async (data: FormValues) => {
     console.log(data);
-    signUp({ variables: { username: data.username, password: data.password } });
+    logIn({ variables: { username: data.username, password: data.password } });
     // await m.auth.loginWithMagicLink({ email: data.username });
   };
 
@@ -62,7 +69,7 @@ function SignUp({}: Props): ReactElement {
           <Title fontSize={48} />
           <Box border='2px solid' mt='2' h='20rem' w='24rem'>
             <Box>
-              <Heading m={4}>sign up</Heading>
+              <Heading m={4}>login</Heading>
               <VStack spacing={4} mt={12} mx={4}>
                 <FormControl isInvalid={errors.username}>
                   <Input
@@ -95,4 +102,4 @@ function SignUp({}: Props): ReactElement {
   );
 }
 
-export default SignUp;
+export default LogIn;

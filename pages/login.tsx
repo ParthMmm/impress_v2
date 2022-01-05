@@ -1,13 +1,12 @@
 import type { NextPage } from 'next';
+import LogInComp from '../components/Auth/LogInComponent';
 
-import LogIn from '../components/Auth/LogIn';
-import Header from '../components/Header';
-const Login: NextPage = () => {
+const login: NextPage = () => {
   return (
     <>
-      <LogIn />
+      <LogInComp />
     </>
   );
 };
 
-export default Login;
+export default login;

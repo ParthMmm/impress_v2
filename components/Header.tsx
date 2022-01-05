@@ -1,17 +1,5 @@
 import React, { ReactElement } from 'react';
-import {
-  Flex,
-  Heading,
-  ButtonGroup,
-  Button,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Menu,
-  IconButton,
-  Link,
-  useColorMode,
-} from '@chakra-ui/react';
+import { Flex, ButtonGroup, Button, useColorMode } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import Title from './Title';
 interface Props {}
