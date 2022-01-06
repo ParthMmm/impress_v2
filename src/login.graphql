@@ -1,0 +1,13 @@
+mutation Mutation($username: String, $password: String) {
+  logIn(username: $username, password: $password) {
+    username
+    id
+  }
+}
+
+query AllUsers {
+  allUsers {
+    username
+    id
+  }
+}

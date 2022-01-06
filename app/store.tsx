@@ -1,8 +1,13 @@
 import { configureStore, PayloadAction, createStore } from '@reduxjs/toolkit';
+import { authSlice } from './authSlice';
 
 export const store = configureStore({
-  reducer: {},
-  preloadedState: {},
+  reducer: {
+    auth: authSlice.reducer,
+  },
+  preloadedState: {
+    auth: { User: { id: 0, username: '' } },
+  },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
