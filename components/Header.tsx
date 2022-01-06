@@ -1,8 +1,19 @@
 import React, { ReactElement } from 'react';
-import { Flex, ButtonGroup, Button, useColorMode } from '@chakra-ui/react';
+import {
+  Flex,
+  ButtonGroup,
+  Button,
+  useColorMode,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  IconButton,
+} from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import Title from './Title';
 import { useQueryClient } from 'react-query';
+import { RiUser4Fill, RiSettings4Line, RiLogoutBoxLine } from 'react-icons/ri';
 interface Props {}
 
 interface User {
@@ -16,7 +27,7 @@ function Header({}: Props): ReactElement {
 
   const queryClient = useQueryClient();
 
-  const user: User | undefined = queryClient.getQueryData('auth');
+  const user: User | undefined = queryClient.getQueryData('CurrentUser');
   console.log(user);
   if (user) {
     return (
@@ -36,9 +47,36 @@ function Header({}: Props): ReactElement {
           borderBottom='5px solid '
         >
           <Title fontSize={48} />
-          <ButtonGroup>
-            <Button>{user.username}</Button>
-          </ButtonGroup>
+          {/* <Menu>
+            <MenuButton as={RiUser4Fill} color='white'>
+              {user.username}
+            </MenuButton>
+            <MenuList>
+              <MenuItem>profile</MenuItem>
+              <MenuItem>settings</MenuItem>
+              <MenuItem>log out</MenuItem>
+            </MenuList>
+          </Menu> */}
+
+          <Menu variant={'outline'}>
+            <MenuButton
+              as={IconButton}
+              icon={<RiUser4Fill />}
+              // color='purple.600'
+              bg='0'
+              _focus={{ border: '2px solid white' }}
+              _hover={{ bg: 'none', color: 'gray.200' }}
+              _active={{ border: '2px solid white', bg: 'none' }}
+              // as={RiUser4Fill}
+              // color='white'
+              size='lg'
+            />
+            <MenuList bg={colorMode === 'light' ? 'white' : 'black'}>
+              <MenuItem icon={<RiUser4Fill />}>profile</MenuItem>
+              <MenuItem icon={<RiSettings4Line />}>settings</MenuItem>
+              <MenuItem icon={<RiLogoutBoxLine />}>log out</MenuItem>
+            </MenuList>
+          </Menu>
         </Flex>
       </Flex>
     );

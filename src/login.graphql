@@ -5,8 +5,8 @@ mutation Mutation($username: String, $password: String) {
   }
 }
 
-query AllUsers {
-  allUsers {
+query CurrentUser {
+  currentUser {
     username
     id
   }

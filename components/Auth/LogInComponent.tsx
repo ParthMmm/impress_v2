@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { useRouter } from 'next/router';
 import { useQueryClient } from 'react-query';
-import { useMutationMutation, useAllUsersQuery } from '../../generates';
+import { useMutationMutation } from '../../generates';
 import client from '../../app/request-client';
 
 interface Props {}
@@ -37,7 +37,7 @@ function LogIn({}: Props): ReactElement {
   const { mutate, isLoading, error, data } = useMutationMutation(client, {
     onSuccess: (data) => {
       console.log({ data });
-      queryClient.setQueryData('auth', data.logIn);
+      queryClient.setQueryData('currentUser', data.logIn);
     },
   });
   const {
