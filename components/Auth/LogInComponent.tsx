@@ -8,36 +8,34 @@ import {
   Input,
   FormControl,
   VStack,
-  Text,
   Spinner,
+  Center,
+  FormErrorMessage,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
-// import { yupResolver } from '@hookform/resolvers/yup/';
-import * as Yup from 'yup';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 import { useRouter } from 'next/router';
 import { useQueryClient } from 'react-query';
-import { useMutationMutation } from '../../generates';
+import { useLogInMutation } from '../../generates';
 import client from '../../app/request-client';
+import Toasts from './Toasts';
+import { MutateProps, FormValues } from '../../interfaces';
 
 interface Props {}
 
-interface FormValues {
-  username: string;
-  password: string;
-}
-
-const validationSchema = Yup.object().shape({
-  username: Yup.string().required('required'),
-  password: Yup.string().required('required'),
+const validationSchema = z.object({
+  username: z.string().min(3, { message: 'must be 3 or more characters' }),
+  password: z.string().min(8, { message: 'must be 8 or more characters' }),
 });
 
 function LogIn({}: Props): ReactElement {
   const queryClient = useQueryClient();
   const router = useRouter();
-  const { mutate, isLoading, error, data } = useMutationMutation(client, {
+
+  const { mutate, isLoading, error, data }: any = useLogInMutation(client, {
     onSuccess: (data) => {
-      console.log({ data });
-      queryClient.setQueryData('currentUser', data.logIn);
+      queryClient.setQueryData('CurrentUser', data);
     },
   });
   const {
@@ -46,12 +44,16 @@ function LogIn({}: Props): ReactElement {
     reset,
     formState: { errors },
   } = useForm({
-    // resolver: yupResolver(validationSchema),
+    resolver: zodResolver(validationSchema),
   });
 
+  const errorMsg: string = error?.response?.errors[0].message;
+
   const onSubmit = async (data: FormValues) => {
-    console.log(data);
-    mutate({ username: data.username, password: data.password });
+    if (validationSchema.parse(data)) {
+      mutate(validationSchema.parse(data));
+    }
+    reset();
   };
 
   if (isLoading) {
@@ -68,30 +70,9 @@ function LogIn({}: Props): ReactElement {
             <Box border='2px solid' mt='2' h='20rem' w='24rem'>
               <Box>
                 <Heading m={4}>login</Heading>
-                <Spinner />
-              </Box>
-            </Box>
-          </Flex>
-        </form>
-      </>
-    );
-  }
-
-  if (error) {
-    return (
-      <>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Flex
-            justifyContent={'center'}
-            align={'center'}
-            h='100vh'
-            flexDir={'column'}
-          >
-            <Title fontSize={48} />
-            <Box border='2px solid' mt='2' h='20rem' w='24rem'>
-              <Box>
-                <Heading m={4}>login</Heading>
-                <Text>error</Text>
+                <Center mt='5rem'>
+                  <Spinner />
+                </Center>
               </Box>
             </Box>
           </Flex>
@@ -101,27 +82,10 @@ function LogIn({}: Props): ReactElement {
   }
 
   if (data) {
-    // store.dispatch(authSlice.actions.setUser(data));
-    console.log({ data });
+    router.push('/');
     return (
       <>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Flex
-            justifyContent={'center'}
-            align={'center'}
-            h='100vh'
-            flexDir={'column'}
-          >
-            <Title fontSize={48} />
-            <Box border='2px solid' mt='2' h='20rem' w='24rem'>
-              <Box>
-                <Heading m={4}>login</Heading>
-                <Text>success</Text>
-                <Button onClick={() => router.push('/')}>go home</Button>
-              </Box>
-            </Box>
-          </Flex>
-        </form>
+        <Toasts errors='' data={{ data }} />
       </>
     );
   } else {
@@ -135,11 +99,11 @@ function LogIn({}: Props): ReactElement {
             flexDir={'column'}
           >
             <Title fontSize={48} />
-            <Box border='2px solid' mt='2' h='20rem' w='24rem'>
+            <Box border='2px solid' mt='2' h='24rem' w='24rem'>
               <Box>
                 <Heading m={4}>login</Heading>
-                <VStack spacing={4} mt={12} mx={4}>
-                  <FormControl isInvalid={errors.username}>
+                <VStack spacing={6} mt={12} mx={4}>
+                  <FormControl isInvalid={errors?.username}>
                     <Input
                       id='username'
                       type='username'
@@ -147,8 +111,11 @@ function LogIn({}: Props): ReactElement {
                       focusBorderColor={'white'}
                       {...register('username')}
                     />
+                    <FormErrorMessage>
+                      {errors?.username?.message}
+                    </FormErrorMessage>
                   </FormControl>
-                  <FormControl isInvalid={errors.password}>
+                  <FormControl isInvalid={errors?.password}>
                     <Input
                       id='password'
                       type='password'
@@ -156,6 +123,9 @@ function LogIn({}: Props): ReactElement {
                       focusBorderColor={'white'}
                       {...register('password')}
                     />
+                    <FormErrorMessage>
+                      {errors?.password?.message}
+                    </FormErrorMessage>
                   </FormControl>
                 </VStack>
                 <Flex justifyContent={'flex-end'} mt={8} mx={4}>
@@ -164,6 +134,11 @@ function LogIn({}: Props): ReactElement {
                 </Flex>
               </Box>
             </Box>
+            {error ? (
+              <Toasts errors={error?.response?.errors[0].message} data='' />
+            ) : (
+              <></>
+            )}
           </Flex>
         </form>
       </>

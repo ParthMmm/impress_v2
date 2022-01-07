@@ -14,11 +14,18 @@ import { useRouter } from 'next/router';
 import Title from './Title';
 import { useQueryClient } from 'react-query';
 import { RiUser4Fill, RiSettings4Line, RiLogoutBoxLine } from 'react-icons/ri';
+import { useLogOutMutation } from '../generates';
+import client from '../app/request-client';
+
 interface Props {}
 
 interface User {
   id: number;
   username: string;
+}
+interface currentUser {
+  currentUser: User;
+  a: number;
 }
 
 function Header({}: Props): ReactElement {
@@ -26,10 +33,16 @@ function Header({}: Props): ReactElement {
   const { colorMode } = useColorMode();
 
   const queryClient = useQueryClient();
+  const { mutate, isLoading, error, data } = useLogOutMutation(client, {
+    onSuccess: (data) => {
+      queryClient.setQueryData('CurrentUser', {});
+    },
+  });
 
-  const user: User | undefined = queryClient.getQueryData('CurrentUser');
-  console.log(user);
-  if (user) {
+  const currentUser: currentUser | undefined =
+    queryClient.getQueryData('CurrentUser');
+
+  if (currentUser?.currentUser?.id) {
     return (
       <Flex
         w={'full'}
@@ -47,16 +60,6 @@ function Header({}: Props): ReactElement {
           borderBottom='5px solid '
         >
           <Title fontSize={48} />
-          {/* <Menu>
-            <MenuButton as={RiUser4Fill} color='white'>
-              {user.username}
-            </MenuButton>
-            <MenuList>
-              <MenuItem>profile</MenuItem>
-              <MenuItem>settings</MenuItem>
-              <MenuItem>log out</MenuItem>
-            </MenuList>
-          </Menu> */}
 
           <Menu variant={'outline'}>
             <MenuButton
@@ -74,7 +77,9 @@ function Header({}: Props): ReactElement {
             <MenuList bg={colorMode === 'light' ? 'white' : 'black'}>
               <MenuItem icon={<RiUser4Fill />}>profile</MenuItem>
               <MenuItem icon={<RiSettings4Line />}>settings</MenuItem>
-              <MenuItem icon={<RiLogoutBoxLine />}>log out</MenuItem>
+              <MenuItem icon={<RiLogoutBoxLine />} onClick={() => mutate({})}>
+                log out
+              </MenuItem>
             </MenuList>
           </Menu>
         </Flex>
