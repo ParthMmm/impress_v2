@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import Title from '../Title';
 import {
   Flex,
   Heading,
@@ -20,6 +19,8 @@ import { useQueryClient } from 'react-query';
 import { useLogInMutation } from '../../generates';
 import client from '../../app/request-client';
 import Toasts from './Toasts';
+import Title from '../Title';
+
 import { MutateProps, FormValues } from '../../interfaces';
 
 interface Props {}
