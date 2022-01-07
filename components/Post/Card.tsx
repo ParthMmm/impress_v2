@@ -21,7 +21,7 @@ interface Post {
 
 function Card({}: Props): ReactElement {
   return (
-    <Box border='4px solid' mt='16'>
+    <Box border='4px solid'>
       <Flex
         // align={'center'}
         justifyContent={'space-between'}

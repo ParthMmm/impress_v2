@@ -1,22 +1,27 @@
 import React, { ReactElement } from 'react';
-import { Flex } from '@chakra-ui/react';
-import Card from './Post/Card';
-
+import { Flex, Box, Grid, GridItem, Spacer } from '@chakra-ui/react';
+import Posts from './Post/Posts';
+import Sidebar from './Sidebar';
 interface Props {}
 
 function Landing({}: Props): ReactElement {
   return (
-    <Flex
-      justifyContent={'center'}
-      alignItems={'center'}
-      h='80%'
-      flexDir={'column'}
-      overflowY={'scroll'}
-      zIndex={1}
-    >
-      <Card />
-      <Card />
-    </Flex>
+    <>
+      <Flex
+        h={'100%'}
+        maxW={'70%'}
+        margin-left={'auto'}
+        margin-right={'auto'}
+        justifyContent={'space-evenly'}
+        zIndex={0}
+        overflowY={'hidden'}
+      >
+        <Box />
+        <Posts />
+
+        <Sidebar />
+      </Flex>
+    </>
   );
 }
 

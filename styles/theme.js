@@ -14,6 +14,9 @@ const styles = {
 
       transitionProperty: 'background-color',
       transitionDuration: 'normal',
+      // overflowY: 'scroll',
+      // overscrollBehavior: 'contain',
+      height: '100%',
     },
   }),
 };

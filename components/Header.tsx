@@ -46,10 +46,11 @@ function Header({}: Props): ReactElement {
     return (
       <Flex
         w={'full'}
-        pos={'sticky'}
+        pos={'fixed'}
         bg={colorMode === 'light' ? 'white' : 'black'}
         top={0}
         zIndex={2}
+        overflow={'hidden'}
       >
         <Flex
           alignItems='center'
