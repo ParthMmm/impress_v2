@@ -17,6 +17,18 @@ const styles = {
     },
   }),
 };
+
+const components = {
+  components: (props) => ({
+    MenuList: {
+      color: mode('black', 'white')(props),
+      bg: mode('white', 'black')(props),
+
+      transitionProperty: 'background-color',
+      transitionDuration: 'normal',
+    },
+  }),
+};
 const theme = extendTheme({ config, styles });
 
 export default theme;

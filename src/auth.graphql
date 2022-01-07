@@ -1,0 +1,26 @@
+mutation LogIn($username: String, $password: String) {
+  logIn(username: $username, password: $password) {
+    username
+    id
+  }
+}
+
+mutation SignUp($username: String, $password: String) {
+  signUp(username: $username, password: $password) {
+    username
+    id
+  }
+}
+
+mutation LogOut {
+  logOut {
+    id
+    username
+  }
+}
+query CurrentUser {
+  currentUser {
+    username
+    id
+  }
+}

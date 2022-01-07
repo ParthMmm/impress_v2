@@ -1,0 +1,20 @@
+type User {
+  id: String
+  username: String
+  password: String
+}
+
+type Query {
+  currentUser: User!
+}
+
+type Mutation {
+  signUp(username: String, password: String): User
+  logIn(username: String, password: String): User
+  logOut: User
+}
+
+input userSignUpInput {
+  username: String!
+  password: String!
+}

@@ -1,9 +1,12 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Landing from '../components/Landing';
-import { Box } from '@chakra-ui/react';
 import Header from '../components/Header';
+import client from '../app/request-client';
+import { useCurrentUserQuery } from '../generates';
 const Home: NextPage = () => {
+  const { data } = useCurrentUserQuery(client);
+
   return (
     <>
       <Head>
@@ -11,11 +14,9 @@ const Home: NextPage = () => {
         <meta name='description' content='Share mechanical switches' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <Box h={'100vh'} w={'100%'}>
-        <Header />
+      <Header />
 
-        <Landing />
-      </Box>
+      <Landing />
     </>
   );
 };

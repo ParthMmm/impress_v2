@@ -1,0 +1,13 @@
+# codegen.yml
+schema: schema.graphql
+documents: './src/**/*.graphql'
+generates:
+  ./generates.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-query
+    config:
+      fetcher:
+        graphql-request
+        # endpoint: 'http://localhost:8000/graphql'
