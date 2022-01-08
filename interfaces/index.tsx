@@ -25,3 +25,12 @@ export interface MutateProps {
   error: any;
   data: SignUpMutation | undefined;
 }
+
+export interface CreatePostValues {
+  title: string;
+  description: string;
+  type: string;
+  film: string;
+  lube: string;
+  file_: FileList;
+}

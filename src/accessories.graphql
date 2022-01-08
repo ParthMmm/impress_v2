@@ -1,0 +1,13 @@
+query GetFilms {
+  getFilms {
+    id
+    name
+  }
+}
+
+query GetLubes {
+  getLubes {
+    id
+    name
+  }
+}

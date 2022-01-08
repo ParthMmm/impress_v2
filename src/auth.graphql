@@ -24,3 +24,10 @@ query CurrentUser {
     id
   }
 }
+
+query GetFilms {
+  getFilms {
+    id
+    name
+  }
+}

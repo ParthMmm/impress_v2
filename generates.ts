@@ -1,6 +1,6 @@
 import { GraphQLClient } from 'graphql-request';
 import { RequestInit } from 'graphql-request/dist/types.dom';
-import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from 'react-query';
+import { useQuery, UseQueryOptions, useMutation, UseMutationOptions } from 'react-query';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -17,6 +17,18 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+};
+
+export type Film = {
+  __typename?: 'Film';
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+export type Lube = {
+  __typename?: 'Lube';
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
 };
 
 export type Mutation = {
@@ -41,6 +53,10 @@ export type MutationSignUpArgs = {
 export type Query = {
   __typename?: 'Query';
   currentUser: User;
+  getFilms?: Maybe<Array<Maybe<Film>>>;
+  getLubes?: Maybe<Array<Maybe<Lube>>>;
+  test?: Maybe<Scalars['String']>;
+  tester?: Maybe<Scalars['String']>;
 };
 
 export type User = {
@@ -54,6 +70,16 @@ export type UserSignUpInput = {
   password: Scalars['String'];
   username: Scalars['String'];
 };
+
+export type GetFilmsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetFilmsQuery = { __typename?: 'Query', getFilms?: Array<{ __typename?: 'Film', id?: number | null | undefined, name?: string | null | undefined } | null | undefined> | null | undefined };
+
+export type GetLubesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetLubesQuery = { __typename?: 'Query', getLubes?: Array<{ __typename?: 'Lube', id?: number | null | undefined, name?: string | null | undefined } | null | undefined> | null | undefined };
 
 export type LogInMutationVariables = Exact<{
   username?: InputMaybe<Scalars['String']>;
@@ -82,6 +108,50 @@ export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 export type CurrentUserQuery = { __typename?: 'Query', currentUser: { __typename?: 'User', username?: string | null | undefined, id?: string | null | undefined } };
 
 
+export const GetFilmsDocument = `
+    query GetFilms {
+  getFilms {
+    id
+    name
+  }
+}
+    `;
+export const useGetFilmsQuery = <
+      TData = GetFilmsQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables?: GetFilmsQueryVariables,
+      options?: UseQueryOptions<GetFilmsQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<GetFilmsQuery, TError, TData>(
+      variables === undefined ? ['GetFilms'] : ['GetFilms', variables],
+      fetcher<GetFilmsQuery, GetFilmsQueryVariables>(client, GetFilmsDocument, variables, headers),
+      options
+    );
+export const GetLubesDocument = `
+    query GetLubes {
+  getLubes {
+    id
+    name
+  }
+}
+    `;
+export const useGetLubesQuery = <
+      TData = GetLubesQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables?: GetLubesQueryVariables,
+      options?: UseQueryOptions<GetLubesQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<GetLubesQuery, TError, TData>(
+      variables === undefined ? ['GetLubes'] : ['GetLubes', variables],
+      fetcher<GetLubesQuery, GetLubesQueryVariables>(client, GetLubesDocument, variables, headers),
+      options
+    );
 export const LogInDocument = `
     mutation LogIn($username: String, $password: String) {
   logIn(username: $username, password: $password) {

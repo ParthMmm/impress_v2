@@ -6,6 +6,10 @@ type User {
 
 type Query {
   currentUser: User!
+  test: String
+  getLubes: [Lube]
+  tester: String
+  getFilms: [Film]
 }
 
 type Mutation {
@@ -17,4 +21,14 @@ type Mutation {
 input userSignUpInput {
   username: String!
   password: String!
+}
+
+type Lube {
+  id: Int
+  name: String
+}
+
+type Film {
+  id: Int
+  name: String
 }
