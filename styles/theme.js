@@ -31,13 +31,13 @@ const styles = {
 
 const components = {
   components: (props) => ({
-    MenuList: {
-      // color: mode('black', 'white')(props),
-      // bg: mode('white', 'black')(props),
+    // MenuList: {
+    //   // color: mode('black', 'white')(props),
+    //   // bg: mode('white', 'black')(props),
 
-      transitionProperty: 'background-color',
-      transitionDuration: 'normal',
-    },
+    //   transitionProperty: 'background-color',
+    //   transitionDuration: 'normal',
+    // },
     Select: {
       color: mode('black', 'white')(props),
       transitionProperty: 'background-color',

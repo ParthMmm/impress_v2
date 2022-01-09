@@ -98,7 +98,7 @@ const FileUpload = (props: FileUploadProps) => {
           ref(e);
           inputRef.current = e;
         }}
-        // ={(e) => fileHandler(e)}
+        //@ts-ignore
         onChange={(e) => setFile(URL.createObjectURL(e?.target?.files[0]))}
       />
       <>{children}</>
@@ -137,7 +137,7 @@ function CreatePost({}: Props): ReactElement {
     console.log('i changed');
     console.log(file);
   }, [file]);
-  console.log(file);
+  // console.log(file);
 
   if (lubesQuery.data?.getLubes && filmsQuery.data?.getFilms) {
     return (

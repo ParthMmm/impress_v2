@@ -10,12 +10,14 @@ type Query {
   getLubes: [Lube]
   tester: String
   getFilms: [Film]
+  getPost: Post
 }
 
 type Mutation {
   signUp(username: String, password: String): User
   logIn(username: String, password: String): User
   logOut: User
+  createPost(post: PostInput!): id
 }
 
 input userSignUpInput {
@@ -31,4 +33,26 @@ type Lube {
 type Film {
   id: Int
   name: String
+}
+
+type Post {
+  title: String
+  description: String
+  type: String
+  lube: String
+  film: String
+  file_: String
+}
+
+input PostInput {
+  title: String
+  description: String
+  type: String
+  lube: String
+  film: String
+  file_: String
+}
+
+type id {
+  id: String
 }

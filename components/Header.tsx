@@ -50,7 +50,7 @@ function Header({}: Props): ReactElement {
         bg={colorMode === 'light' ? 'white' : 'black'}
         top={0}
         zIndex={2}
-        overflow={'hidden'}
+        // overflow={'hidden'}
       >
         <Flex
           alignItems='center'

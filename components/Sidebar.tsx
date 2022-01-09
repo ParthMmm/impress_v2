@@ -6,7 +6,7 @@ interface Props {}
 
 function Sidebar({}: Props): ReactElement {
   return (
-    <Flex h='100%'>
+    <Flex h='20%' zIndex={0} mt='48'>
       <Flex width={'350px'} position={'fixed'}>
         <Flex
           border='2px solid'
