@@ -17,6 +17,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Upload: any;
 };
 
 export type Film = {
@@ -33,9 +34,15 @@ export type Lube = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createPost?: Maybe<Id>;
   logIn?: Maybe<User>;
   logOut?: Maybe<User>;
   signUp?: Maybe<User>;
+};
+
+
+export type MutationCreatePostArgs = {
+  post?: InputMaybe<PostInput>;
 };
 
 
@@ -50,11 +57,31 @@ export type MutationSignUpArgs = {
   username?: InputMaybe<Scalars['String']>;
 };
 
+export type Post = {
+  __typename?: 'Post';
+  description?: Maybe<Scalars['String']>;
+  file_?: Maybe<Scalars['String']>;
+  film?: Maybe<Scalars['String']>;
+  lube?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+};
+
+export type PostInput = {
+  description?: InputMaybe<Scalars['String']>;
+  file_?: InputMaybe<Scalars['Upload']>;
+  film?: InputMaybe<Scalars['String']>;
+  lube?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Scalars['String']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   currentUser: User;
   getFilms?: Maybe<Array<Maybe<Film>>>;
   getLubes?: Maybe<Array<Maybe<Lube>>>;
+  getPost?: Maybe<Post>;
   test?: Maybe<Scalars['String']>;
   tester?: Maybe<Scalars['String']>;
 };
@@ -64,6 +91,11 @@ export type User = {
   id?: Maybe<Scalars['String']>;
   password?: Maybe<Scalars['String']>;
   username?: Maybe<Scalars['String']>;
+};
+
+export type Id = {
+  __typename?: 'id';
+  id?: Maybe<Scalars['String']>;
 };
 
 export type UserSignUpInput = {
@@ -106,6 +138,13 @@ export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type CurrentUserQuery = { __typename?: 'Query', currentUser: { __typename?: 'User', username?: string | null | undefined, id?: string | null | undefined } };
+
+export type CreatePostMutationVariables = Exact<{
+  post?: InputMaybe<PostInput>;
+}>;
+
+
+export type CreatePostMutation = { __typename?: 'Mutation', createPost?: { __typename?: 'id', id?: string | null | undefined } | null | undefined };
 
 
 export const GetFilmsDocument = `
@@ -235,5 +274,25 @@ export const useCurrentUserQuery = <
     useQuery<CurrentUserQuery, TError, TData>(
       variables === undefined ? ['CurrentUser'] : ['CurrentUser', variables],
       fetcher<CurrentUserQuery, CurrentUserQueryVariables>(client, CurrentUserDocument, variables, headers),
+      options
+    );
+export const CreatePostDocument = `
+    mutation CreatePost($post: PostInput) {
+  createPost(post: $post) {
+    id
+  }
+}
+    `;
+export const useCreatePostMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<CreatePostMutation, TError, CreatePostMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<CreatePostMutation, TError, CreatePostMutationVariables, TContext>(
+      'CreatePost',
+      (variables?: CreatePostMutationVariables) => fetcher<CreatePostMutation, CreatePostMutationVariables>(client, CreatePostDocument, variables, headers)(),
       options
     );

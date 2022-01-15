@@ -1,7 +1,9 @@
 import {
   Exact,
   InputMaybe,
+  PostInput,
   SignUpMutation,
+  CreatePostMutation,
   useSignUpMutation,
 } from '../generates';
 import { UseMutateFunction } from 'react-query';
@@ -33,4 +35,18 @@ export interface CreatePostValues {
   film: string;
   lube: string;
   file_: FileList;
+}
+
+export interface PostMutateProps {
+  mutate: UseMutateFunction<
+    CreatePostMutation,
+    unknown,
+    Exact<{
+      post?: InputMaybe<PostInput> | undefined;
+    }>,
+    unknown
+  >;
+  isLoading: boolean;
+  error: any;
+  data: CreatePostMutation | undefined;
 }

@@ -17,7 +17,7 @@ type Mutation {
   signUp(username: String, password: String): User
   logIn(username: String, password: String): User
   logOut: User
-  createPost(post: PostInput!): id
+  createPost(post: PostInput): id
 }
 
 input userSignUpInput {
@@ -35,6 +35,8 @@ type Film {
   name: String
 }
 
+scalar Upload
+
 type Post {
   title: String
   description: String
@@ -50,7 +52,7 @@ input PostInput {
   type: String
   lube: String
   film: String
-  file_: String
+  file_: Upload
 }
 
 type id {

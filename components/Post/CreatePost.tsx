@@ -30,11 +30,18 @@ import {
   Image,
 } from '@chakra-ui/react';
 import { useForm, UseFormRegisterReturn } from 'react-hook-form';
-import { useGetFilmsQuery, useGetLubesQuery } from '../../generates';
+import {
+  useGetFilmsQuery,
+  useGetLubesQuery,
+  useCreatePostMutation,
+} from '../../generates';
 import client from '../../app/request-client';
 import { RiImage2Line } from 'react-icons/ri';
 import { QueryClient, useQueryClient } from 'react-query';
-import { CreatePostValues } from '../../interfaces';
+import { CreatePostValues, PostMutateProps } from '../../interfaces';
+import { MutateProps } from '../../interfaces';
+import axios from 'axios';
+
 // import { zodResolver } from '@hookform/resolvers/zod';
 // import * as z from 'zod';
 
@@ -81,7 +88,7 @@ const FileUpload = (props: FileUploadProps) => {
 
   const fileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     //@ts-ignore
-    setFile(URL.createObjectURL(e.target.files[0]));
+    setFile(URL.createObjectURL(e.target.files[0].name.split('.')));
   };
 
   //   console.log(inputRef.current);
@@ -99,7 +106,7 @@ const FileUpload = (props: FileUploadProps) => {
           inputRef.current = e;
         }}
         //@ts-ignore
-        onChange={(e) => setFile(URL.createObjectURL(e?.target?.files[0]))}
+        onChange={(e) => setFile(e?.target?.files[0])}
       />
       <>{children}</>
     </InputGroup>
@@ -113,6 +120,7 @@ function CreatePost({}: Props): ReactElement {
   const lubesQuery = useGetLubesQuery(client);
   const filmsQuery = useGetFilmsQuery(client);
   const queryClient = useQueryClient();
+  const [uploadState, setUploadState] = useState({});
 
   const {
     register,
@@ -129,13 +137,35 @@ function CreatePost({}: Props): ReactElement {
     //   file_: FileList | '',
     // },
   });
-  const onSubmit = (data: CreatePostValues) => {
-    console.log(data);
+
+  const { mutate, data }: PostMutateProps = useCreatePostMutation(client, {
+    onSuccess: (data) => {
+      console.log({ post: data });
+    },
+  });
+
+  const onSubmit = async (data: CreatePostValues) => {
+    const x = await axios.get('/api/uploadImage');
+    const formData = new FormData();
+    Object.entries(x.data.fields).forEach(([k, v]: string | any) => {
+      formData.append(k, v);
+    });
+    formData.append('file', file); // The file has be the last element
+    console.log(formData);
+    // formData.append('Content-Type');
+    // formData.append('file', file); // must be the last one
+    // console.log(x);
+
+    const a = await axios.post(x.data.url, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    console.log({ a });
   };
   let img = queryClient.getQueryData('image');
   useEffect(() => {
     console.log('i changed');
-    console.log(file);
+    // console.log(file[0]);
+    // console.log(file[1]);
   }, [file]);
   // console.log(file);
 
