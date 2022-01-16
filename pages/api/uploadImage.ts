@@ -10,26 +10,39 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   });
   const s3 = new aws.S3();
 
-  const fileName = uuid();
+  //   const fileName = uuid();
+  let fileName;
   const fileType = req.body.fileType;
+
+  //   const re = /[^.]*$/;
+  const re = /\.(.*)/;
+  //   const re = new RegExp('[^/]*$');
+  let x = re.exec(req.body.fileName);
+  if (x) {
+    console.log('🚀', x[0]);
+    fileName = uuid() + x[0];
+  }
 
   const s3Params = {
     Bucket: process.env.NEXT_PUBLIC_BUCKET_NAME,
-    Key: `posts/${fileName}.jpg`,
+    Key: `posts/${fileName}`,
     ContentType: 'image/jpeg',
     // Body: req.body.file,
     ACL: 'public-read',
     // Body:
     Expires: 60,
   };
+
+  console.log(fileName);
+
   //   const uploadURL = await s3.getSignedUrlPromise('putObject', s3Params);
   //   console.log(uploadURL);
   //   res.status(200).json({ uploadURL });
   const post = await s3.createPresignedPost({
     Bucket: process.env.NEXT_PUBLIC_BUCKET_NAME,
     Fields: {
-      key: `posts/${fileName}.jpg`,
-      ContentType: 'image/jpeg',
+      key: `posts/${fileName}`,
+      ContentType: fileType,
     },
     Expires: 60,
     Conditions: [
@@ -37,7 +50,9 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     ],
   });
   console.log(post);
-  res.status(200).send(post);
+  let link = `https://${process.env.NEXT_PUBLIC_BUCKET_NAME}.s3.amazonaws.com/posts/${fileName}`;
+
+  res.status(200).send({ post, link });
 
   //   res.status(200).json(post);
 

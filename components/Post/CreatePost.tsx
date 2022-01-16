@@ -4,6 +4,7 @@ import React, {
   useRef,
   useState,
   useEffect,
+  useCallback,
 } from 'react';
 import {
   Button,
@@ -28,6 +29,7 @@ import {
   InputLeftElement,
   Icon,
   Image,
+  Box,
 } from '@chakra-ui/react';
 import { useForm, UseFormRegisterReturn } from 'react-hook-form';
 import {
@@ -41,7 +43,7 @@ import { QueryClient, useQueryClient } from 'react-query';
 import { CreatePostValues, PostMutateProps } from '../../interfaces';
 import { MutateProps } from '../../interfaces';
 import axios from 'axios';
-
+import { useDropzone } from 'react-dropzone';
 // import { zodResolver } from '@hookform/resolvers/zod';
 // import * as z from 'zod';
 
@@ -73,10 +75,11 @@ type FileUploadProps = {
   multiple?: boolean;
   children?: ReactNode;
   setFile: React.Dispatch<React.SetStateAction<string>>;
+  setFileInfo: React.Dispatch<React.SetStateAction<null>>;
 };
 
 const FileUpload = (props: FileUploadProps) => {
-  const { register, accept, multiple, children, setFile } = props;
+  const { register, accept, multiple, children, setFile, setFileInfo } = props;
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { ref, ...rest } = register as {
     ref: (instance: HTMLInputElement | null) => void;
@@ -86,10 +89,12 @@ const FileUpload = (props: FileUploadProps) => {
     inputRef.current?.click();
   };
 
-  const fileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //@ts-ignore
-    setFile(URL.createObjectURL(e.target.files[0].name.split('.')));
-  };
+  // const fileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //@ts-ignore
+  // setFileInfo(
+  //   URL.createObjectURL(inputRef.current.target?.files[0].name.split('.'))
+  // );
+  // };
 
   //   console.log(inputRef.current);
 
@@ -117,10 +122,21 @@ function CreatePost({}: Props): ReactElement {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode } = useColorMode();
   const [file, setFile] = useState('');
+  const [fileInfo, setFileInfo] = useState(null);
+
   const lubesQuery = useGetLubesQuery(client);
   const filmsQuery = useGetFilmsQuery(client);
   const queryClient = useQueryClient();
   const [uploadState, setUploadState] = useState({});
+
+  const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
+
+  useEffect(() => {
+    // console.log({ acceptedFiles });
+    acceptedFiles.forEach((x) => {
+      console.log(x.name, x.type);
+    });
+  }, [acceptedFiles]);
 
   const {
     register,
@@ -145,25 +161,38 @@ function CreatePost({}: Props): ReactElement {
   });
 
   const onSubmit = async (data: CreatePostValues) => {
-    const x = await axios.get('/api/uploadImage');
+    // console.log({ fileInfo });
+
+    const x = await axios.post('/api/uploadImage', {
+      // fileName: fileInfo[0],
+      // fileType: fileInfo[1],
+      // fileName
+      fileName: acceptedFiles[0].name,
+      fileType: acceptedFiles[0].type,
+    });
     const formData = new FormData();
-    Object.entries(x.data.fields).forEach(([k, v]: string | any) => {
+
+    console.log(x.data);
+
+    Object.entries(x.data.post.fields).forEach(([k, v]: string | any) => {
       formData.append(k, v);
     });
-    formData.append('file', file); // The file has be the last element
-    console.log(formData);
+    formData.append('file', acceptedFiles[0]); // The file has be the last element
+    // console.log(formData);
     // formData.append('Content-Type');
     // formData.append('file', file); // must be the last one
     // console.log(x);
 
-    const a = await axios.post(x.data.url, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
-    console.log({ a });
+    axios
+      .post(x.data.post.url, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+      .then(() => console.log('🎉', x.data.link))
+      .catch((errors) => console.log(errors));
   };
   let img = queryClient.getQueryData('image');
   useEffect(() => {
-    console.log('i changed');
+    // console.log('i changed');
     // console.log(file[0]);
     // console.log(file[1]);
   }, [file]);
@@ -288,14 +317,17 @@ function CreatePost({}: Props): ReactElement {
                   </FormControl>
                   <Flex align='center' flexDir={'column'}>
                     <FormControl isInvalid={errors.file_} isRequired>
-                      <FileUpload
+                      {/* <FileUpload
                         accept={'image/*'}
                         multiple
                         register={register('file_', {
                           validate: validateFiles,
                         })}
                         setFile={setFile}
-                      >
+                        setFileInfo={setFileInfo}
+                      > */}
+                      <Box {...getRootProps({ className: 'dropzone' })}>
+                        <input {...getInputProps()} />
                         <Flex align='center' flexDir={'column'}>
                           <Button leftIcon={<Icon as={RiImage2Line} />} mb={2}>
                             upload image
@@ -311,7 +343,8 @@ function CreatePost({}: Props): ReactElement {
                             <></>
                           )}
                         </Flex>
-                      </FileUpload>
+                        {/* </FileUpload> */}
+                      </Box>
                       <FormErrorMessage>
                         {errors.file_ && errors?.file_.message}
                       </FormErrorMessage>
