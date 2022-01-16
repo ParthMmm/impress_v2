@@ -4,7 +4,6 @@ import React, {
   useRef,
   useState,
   useEffect,
-  useCallback,
 } from 'react';
 import {
   Button,
@@ -17,7 +16,6 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
-  Text,
   FormControl,
   FormErrorMessage,
   Input,
@@ -26,10 +24,10 @@ import {
   Textarea,
   useColorMode,
   InputGroup,
-  InputLeftElement,
   Icon,
   Image,
   Box,
+  Tooltip,
 } from '@chakra-ui/react';
 import { useForm, UseFormRegisterReturn } from 'react-hook-form';
 import {
@@ -39,13 +37,14 @@ import {
 } from '../../generates';
 import client from '../../app/request-client';
 import { RiImage2Line } from 'react-icons/ri';
-import { QueryClient, useQueryClient } from 'react-query';
-import { CreatePostValues, PostMutateProps } from '../../interfaces';
-import { MutateProps } from '../../interfaces';
+import { useQueryClient } from 'react-query';
+import { CreatePostValues, currentUser } from '../../interfaces';
 import axios from 'axios';
 import { useDropzone } from 'react-dropzone';
-// import { zodResolver } from '@hookform/resolvers/zod';
-// import * as z from 'zod';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import Toasts from '../Auth/Toasts';
+import CreatePostModal from './CreatePostModal';
 
 interface Props {}
 
@@ -78,46 +77,6 @@ type FileUploadProps = {
   setFileInfo: React.Dispatch<React.SetStateAction<null>>;
 };
 
-const FileUpload = (props: FileUploadProps) => {
-  const { register, accept, multiple, children, setFile, setFileInfo } = props;
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const { ref, ...rest } = register as {
-    ref: (instance: HTMLInputElement | null) => void;
-  };
-
-  const handleClick = () => {
-    inputRef.current?.click();
-  };
-
-  // const fileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //@ts-ignore
-  // setFileInfo(
-  //   URL.createObjectURL(inputRef.current.target?.files[0].name.split('.'))
-  // );
-  // };
-
-  //   console.log(inputRef.current);
-
-  return (
-    <InputGroup onClick={handleClick}>
-      <input
-        type={'file'}
-        multiple={multiple || false}
-        hidden
-        accept={accept}
-        {...rest}
-        ref={(e) => {
-          ref(e);
-          inputRef.current = e;
-        }}
-        //@ts-ignore
-        onChange={(e) => setFile(e?.target?.files[0])}
-      />
-      <>{children}</>
-    </InputGroup>
-  );
-};
-
 function CreatePost({}: Props): ReactElement {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode } = useColorMode();
@@ -128,15 +87,33 @@ function CreatePost({}: Props): ReactElement {
   const filmsQuery = useGetFilmsQuery(client);
   const queryClient = useQueryClient();
   const [uploadState, setUploadState] = useState({});
-
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
+  const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
+    accept: 'image/*',
+  });
 
   useEffect(() => {
-    // console.log({ acceptedFiles });
-    acceptedFiles.forEach((x) => {
-      console.log(x.name, x.type);
-    });
+    setFile(acceptedFiles.map((single) => URL.createObjectURL(single))[0]);
   }, [acceptedFiles]);
+
+  useEffect(() => {
+    setFile('');
+  }, [onClose]);
+
+  const validationSchema = z.object({
+    title: z.string().min(3, { message: 'must be 3 or more characters' }),
+    description: z.string({
+      required_error: 'required',
+      invalid_type_error: ' must be a string',
+    }),
+    type: z.string({ required_error: 'required' }),
+    film: z.string({ required_error: 'required' }),
+    lube: z.string({ required_error: 'required' }),
+    // file:
+    //   typeof window === 'undefined'
+    //     ? z.any()
+    //     : z.instanceof(File, { message: 'img required' }),
+    // file_: z.instanceof(File, { message: 'error with image' }),
+  });
 
   const {
     register,
@@ -144,29 +121,34 @@ function CreatePost({}: Props): ReactElement {
     reset,
     formState: { errors, dirtyFields, touchedFields },
   } = useForm({
-    // resolver: zodResolver(validationSchema),
+    resolver: zodResolver(validationSchema),
     // defaultValues: {
     //   title: '',
     //   description: '',
+    //   type: '',
     //   film: '',
     //   lube: '',
-    //   file_: FileList | '',
+    //   file_: '',
     // },
   });
 
-  const { mutate, data }: PostMutateProps = useCreatePostMutation(client, {
+  // useEffect(() => {
+  //   // Make sure to revoke the data uris to avoid memory leaks
+  //   file.forEach((xx) => URL.revokeObjectURL(xx.preview));
+  // }, [file]);
+
+  const { mutate, data }: any = useCreatePostMutation(client, {
     onSuccess: (data) => {
       console.log({ post: data });
+      Toasts;
     },
   });
 
-  const onSubmit = async (data: CreatePostValues) => {
-    // console.log({ fileInfo });
+  const currentUser: currentUser | undefined =
+    queryClient.getQueryData('CurrentUser');
 
+  const onSubmit = async (data: CreatePostValues) => {
     const x = await axios.post('/api/uploadImage', {
-      // fileName: fileInfo[0],
-      // fileType: fileInfo[1],
-      // fileName
       fileName: acceptedFiles[0].name,
       fileType: acceptedFiles[0].type,
     });
@@ -178,205 +160,34 @@ function CreatePost({}: Props): ReactElement {
       formData.append(k, v);
     });
     formData.append('file', acceptedFiles[0]); // The file has be the last element
-    // console.log(formData);
-    // formData.append('Content-Type');
-    // formData.append('file', file); // must be the last one
-    // console.log(x);
 
     axios
       .post(x.data.post.url, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
-      .then(() => console.log('🎉', x.data.link))
+      .then(() => {
+        console.log('🎉', x.data.link);
+        console.log(data);
+
+        data['file_'] = x.data.link;
+        mutate({ post: data });
+        setFile('');
+        reset();
+      })
       .catch((errors) => console.log(errors));
   };
   let img = queryClient.getQueryData('image');
-  useEffect(() => {
-    // console.log('i changed');
-    // console.log(file[0]);
-    // console.log(file[1]);
-  }, [file]);
-  // console.log(file);
 
   if (lubesQuery.data?.getLubes && filmsQuery.data?.getFilms) {
     return (
       <Flex>
         <Button onClick={onOpen}>create post</Button>
 
-        <Modal onClose={onClose} isOpen={isOpen} isCentered>
-          <ModalOverlay />
-          <ModalContent
-            border={'2px solid'}
-            bg={colorMode === 'light' ? 'white' : 'black'}
-            borderColor={colorMode === 'light' ? 'black' : 'white'}
-          >
-            <ModalHeader>create post</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <VStack spacing={6}>
-                  <FormControl isInvalid={errors?.title} isRequired>
-                    <Input
-                      {...register('title', { required: true })}
-                      type='text'
-                      name='title'
-                      id='title'
-                      placeholder='title'
-                      focusBorderColor={
-                        colorMode === 'light' ? 'black' : 'white'
-                      }
-                    ></Input>
-                    <FormErrorMessage mb={-2}>
-                      {errors?.title?.message}
-                    </FormErrorMessage>
-                  </FormControl>
-                  <FormControl isInvalid={errors?.title} isRequired>
-                    <Textarea
-                      {...register('description', { required: true })}
-                      type='text'
-                      name='description'
-                      id='description'
-                      placeholder='description'
-                      focusBorderColor={
-                        colorMode === 'light' ? 'black' : 'white'
-                      }
-                    ></Textarea>
-                    <FormErrorMessage mb={-2}>
-                      {errors?.title?.message}
-                    </FormErrorMessage>
-                  </FormControl>
-                  <FormControl isRequired>
-                    <Select
-                      {...register('type', { required: true })}
-                      name='type'
-                      id='type'
-                      placeholder='switch type'
-                      bg={colorMode === 'light' ? 'white' : 'black'}
-                      focusBorderColor={
-                        colorMode === 'light' ? 'black' : 'white'
-                      }
-                    >
-                      <option style={{ background: 'black' }} value='clicky'>
-                        clicky
-                      </option>
-                      <option style={{ background: 'black' }} value='linear'>
-                        linear
-                      </option>
-                      <option style={{ background: 'black' }} value='tactile'>
-                        tactile
-                      </option>
-                    </Select>
-                  </FormControl>
-                  <FormControl isRequired>
-                    <Select
-                      {...register('lube', { required: true })}
-                      name='lube'
-                      id='lube'
-                      placeholder='lube'
-                      bg={colorMode === 'light' ? 'white' : 'black'}
-                      focusBorderColor={
-                        colorMode === 'light' ? 'black' : 'white'
-                      }
-                    >
-                      {lubesQuery?.data?.getLubes.sort().map((lube) => {
-                        return (
-                          <option
-                            style={{ background: 'black' }}
-                            key={lube?.id}
-                            //@ts-ignore
-                            value={lube?.name}
-                          >
-                            {lube?.name}
-                          </option>
-                        );
-                      })}
-                    </Select>
-                  </FormControl>
-                  <FormControl isRequired>
-                    <Select
-                      {...register('film', { required: true })}
-                      name='film'
-                      id='film'
-                      placeholder='switch film'
-                      bg={colorMode === 'light' ? 'white' : 'black'}
-                      focusBorderColor={
-                        colorMode === 'light' ? 'black' : 'white'
-                      }
-                    >
-                      {filmsQuery?.data?.getFilms.sort().map((film) => {
-                        return (
-                          <option
-                            style={{ background: 'black' }}
-                            key={film?.id}
-                          >
-                            {film?.name}
-                          </option>
-                        );
-                      })}
-                    </Select>
-                  </FormControl>
-                  <Flex align='center' flexDir={'column'}>
-                    <FormControl isInvalid={errors.file_} isRequired>
-                      {/* <FileUpload
-                        accept={'image/*'}
-                        multiple
-                        register={register('file_', {
-                          validate: validateFiles,
-                        })}
-                        setFile={setFile}
-                        setFileInfo={setFileInfo}
-                      > */}
-                      <Box {...getRootProps({ className: 'dropzone' })}>
-                        <input {...getInputProps()} />
-                        <Flex align='center' flexDir={'column'}>
-                          <Button leftIcon={<Icon as={RiImage2Line} />} mb={2}>
-                            upload image
-                          </Button>
-                          {file ? (
-                            <Image
-                              src={file ? file : ''}
-                              h='150'
-                              w='150'
-                              alt={file ? 'img' : ''}
-                            />
-                          ) : (
-                            <></>
-                          )}
-                        </Flex>
-                        {/* </FileUpload> */}
-                      </Box>
-                      <FormErrorMessage>
-                        {errors.file_ && errors?.file_.message}
-                      </FormErrorMessage>
-                    </FormControl>
-                  </Flex>
-                </VStack>
-                <Flex
-                  justifyContent={'space-between'}
-                  align='center'
-                  mt={8}
-                  mx={4}
-                >
-                  <Button onClick={onClose} size='md'>
-                    cancel
-                  </Button>
-
-                  <Button
-                    type='submit'
-                    bg={colorMode === 'light' ? 'black' : 'white'}
-                    color={colorMode === 'light' ? 'white' : 'black'}
-                  >
-                    submit
-                  </Button>
-                </Flex>
-              </form>
-            </ModalBody>
-            <ModalFooter></ModalFooter>
-          </ModalContent>
-        </Modal>
+        <CreatePostModal onOpen={onOpen} isOpen={isOpen} onClose={onClose} />
       </Flex>
     );
   }
+
   return <></>;
 }
 

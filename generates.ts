@@ -69,7 +69,7 @@ export type Post = {
 
 export type PostInput = {
   description?: InputMaybe<Scalars['String']>;
-  file_?: InputMaybe<Scalars['Upload']>;
+  file_?: InputMaybe<Scalars['String']>;
   film?: InputMaybe<Scalars['String']>;
   lube?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
@@ -96,6 +96,7 @@ export type User = {
 export type Id = {
   __typename?: 'id';
   id?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
 };
 
 export type UserSignUpInput = {
@@ -144,7 +145,7 @@ export type CreatePostMutationVariables = Exact<{
 }>;
 
 
-export type CreatePostMutation = { __typename?: 'Mutation', createPost?: { __typename?: 'id', id?: string | null | undefined } | null | undefined };
+export type CreatePostMutation = { __typename?: 'Mutation', createPost?: { __typename?: 'id', id?: string | null | undefined, title?: string | null | undefined } | null | undefined };
 
 
 export const GetFilmsDocument = `
@@ -280,6 +281,7 @@ export const CreatePostDocument = `
     mutation CreatePost($post: PostInput) {
   createPost(post: $post) {
     id
+    title
   }
 }
     `;

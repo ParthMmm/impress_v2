@@ -34,7 +34,7 @@ export interface CreatePostValues {
   type: string;
   film: string;
   lube: string;
-  file_: FileList;
+  file_: string;
 }
 
 export interface PostMutateProps {
@@ -49,4 +49,14 @@ export interface PostMutateProps {
   isLoading: boolean;
   error: any;
   data: CreatePostMutation | undefined;
+}
+
+export interface User {
+  id: number;
+  username: string;
+}
+
+export interface currentUser {
+  currentUser: User;
+  a: number;
 }

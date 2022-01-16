@@ -16,17 +16,8 @@ import { useQueryClient } from 'react-query';
 import { RiUser4Fill, RiSettings4Line, RiLogoutBoxLine } from 'react-icons/ri';
 import { useLogOutMutation } from '../generates';
 import client from '../app/request-client';
-
+import { currentUser, User } from '../interfaces';
 interface Props {}
-
-interface User {
-  id: number;
-  username: string;
-}
-interface currentUser {
-  currentUser: User;
-  a: number;
-}
 
 function Header({}: Props): ReactElement {
   const router = useRouter();
