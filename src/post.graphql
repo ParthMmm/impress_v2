@@ -4,3 +4,22 @@ mutation CreatePost($post: PostInput) {
     title
   }
 }
+
+query GetPosts {
+  getPosts {
+    id
+    title
+    description
+    file_
+    tags {
+      type
+      lube
+      film
+    }
+    createdAt
+    author {
+      username
+      id
+    }
+  }
+}

@@ -10,16 +10,43 @@ import {
   HStack,
 } from '@chakra-ui/react';
 import Image from 'next/image';
+
 interface Props {
-  //   data: Post;
+  post: Post | undefined | null;
+  // post: Post;
 }
 
 interface Post {
-  title: string;
-  image: string;
+  __typename?: 'DataPost';
+  id?: string | null | undefined;
+  title?: string | null | undefined;
+  description?: string | null | undefined;
+  file_?: string | null | undefined;
+  createdAt?: any | null | undefined;
+  tags?:
+    | Array<
+        | {
+            __typename?: 'Tag';
+            type?: string | null | undefined;
+            lube?: string | null | undefined;
+            film?: string | null | undefined;
+          }
+        | null
+        | undefined
+      >
+    | null
+    | undefined;
+  author?:
+    | {
+        __typename?: 'User';
+        username?: string | null | undefined;
+        id?: string | null | undefined;
+      }
+    | null
+    | undefined;
 }
 
-function Card({}: Props): ReactElement {
+function Card({ post }: Props): ReactElement {
   return (
     <Box border='4px solid'>
       <Flex
@@ -28,8 +55,8 @@ function Card({}: Props): ReactElement {
         flexDirection={'row'}
       >
         <Box mx={'6'} my={'2'}>
-          <Heading>title</Heading>
-          <Text>user</Text>
+          <Heading>{post?.title}</Heading>
+          <Text>{post?.author?.username}</Text>
         </Box>
 
         <Button mt={2} mr={2}>
@@ -43,7 +70,7 @@ function Card({}: Props): ReactElement {
         borderBottom={'2px solid'}
       >
         <Image
-          src='https://i.redd.it/22sfgweo1w171.jpg'
+          src={post?.file_ as string}
           alt='poop'
           width={400}
           height={400}
@@ -69,7 +96,7 @@ function Card({}: Props): ReactElement {
         </Box>
       </Flex>
       <Flex mx='2' my='2'>
-        <Text>description</Text>
+        <Text>{post?.description}</Text>
       </Flex>
     </Box>
   );

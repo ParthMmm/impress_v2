@@ -2,6 +2,7 @@ type User {
   id: String
   username: String
   password: String
+  user: String
 }
 
 type Query {
@@ -10,7 +11,7 @@ type Query {
   getLubes: [Lube]
   tester: String
   getFilms: [Film]
-  getPost: Post
+  getPosts: [DataPost]
 }
 
 type Mutation {
@@ -37,6 +38,8 @@ type Film {
 
 scalar Upload
 
+scalar Date
+
 type Post {
   title: String
   description: String
@@ -58,4 +61,21 @@ input PostInput {
 type id {
   id: String
   title: String
+}
+
+type DataPost {
+  id: String
+  title: String
+  description: String
+  author: User
+  createdAt: Date
+  file_: String
+  tags: [Tag]
+}
+
+type Tag {
+  id: String
+  type: String
+  lube: String
+  film: String
 }

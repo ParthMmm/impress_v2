@@ -17,7 +17,19 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Date: any;
   Upload: any;
+};
+
+export type DataPost = {
+  __typename?: 'DataPost';
+  author?: Maybe<User>;
+  createdAt?: Maybe<Scalars['Date']>;
+  description?: Maybe<Scalars['String']>;
+  file_?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+  tags?: Maybe<Array<Maybe<Tag>>>;
+  title?: Maybe<Scalars['String']>;
 };
 
 export type Film = {
@@ -81,15 +93,24 @@ export type Query = {
   currentUser: User;
   getFilms?: Maybe<Array<Maybe<Film>>>;
   getLubes?: Maybe<Array<Maybe<Lube>>>;
-  getPost?: Maybe<Post>;
+  getPosts?: Maybe<Array<Maybe<DataPost>>>;
   test?: Maybe<Scalars['String']>;
   tester?: Maybe<Scalars['String']>;
+};
+
+export type Tag = {
+  __typename?: 'Tag';
+  film?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+  lube?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
 };
 
 export type User = {
   __typename?: 'User';
   id?: Maybe<Scalars['String']>;
   password?: Maybe<Scalars['String']>;
+  user?: Maybe<Scalars['String']>;
   username?: Maybe<Scalars['String']>;
 };
 
@@ -146,6 +167,11 @@ export type CreatePostMutationVariables = Exact<{
 
 
 export type CreatePostMutation = { __typename?: 'Mutation', createPost?: { __typename?: 'id', id?: string | null | undefined, title?: string | null | undefined } | null | undefined };
+
+export type GetPostsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetPostsQuery = { __typename?: 'Query', getPosts?: Array<{ __typename?: 'DataPost', id?: string | null | undefined, title?: string | null | undefined, description?: string | null | undefined, file_?: string | null | undefined, createdAt?: any | null | undefined, tags?: Array<{ __typename?: 'Tag', type?: string | null | undefined, lube?: string | null | undefined, film?: string | null | undefined } | null | undefined> | null | undefined, author?: { __typename?: 'User', username?: string | null | undefined, id?: string | null | undefined } | null | undefined } | null | undefined> | null | undefined };
 
 
 export const GetFilmsDocument = `
@@ -296,5 +322,39 @@ export const useCreatePostMutation = <
     useMutation<CreatePostMutation, TError, CreatePostMutationVariables, TContext>(
       'CreatePost',
       (variables?: CreatePostMutationVariables) => fetcher<CreatePostMutation, CreatePostMutationVariables>(client, CreatePostDocument, variables, headers)(),
+      options
+    );
+export const GetPostsDocument = `
+    query GetPosts {
+  getPosts {
+    id
+    title
+    description
+    file_
+    tags {
+      type
+      lube
+      film
+    }
+    createdAt
+    author {
+      username
+      id
+    }
+  }
+}
+    `;
+export const useGetPostsQuery = <
+      TData = GetPostsQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables?: GetPostsQueryVariables,
+      options?: UseQueryOptions<GetPostsQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<GetPostsQuery, TError, TData>(
+      variables === undefined ? ['GetPosts'] : ['GetPosts', variables],
+      fetcher<GetPostsQuery, GetPostsQueryVariables>(client, GetPostsDocument, variables, headers),
       options
     );
