@@ -5,8 +5,8 @@ mutation CreatePost($post: PostInput) {
   }
 }
 
-query GetPosts {
-  getPosts {
+query GetPosts($range: Int) {
+  getPosts(range: $range) {
     id
     title
     description

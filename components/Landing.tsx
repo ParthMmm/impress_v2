@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { Flex, Box, Grid, GridItem, Spacer } from '@chakra-ui/react';
 import Posts from './Post/Posts';
-import Sidebar from './Sidebar';
+import Sidebar from './Sidebar/Sidebar';
 interface Props {}
 
 function Landing({}: Props): ReactElement {

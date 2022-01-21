@@ -47,8 +47,20 @@ interface Post {
 }
 
 function Card({ post }: Props): ReactElement {
+  const tags = post?.tags?.map((a) => {
+    return { film: a?.film, lube: a?.lube, type: a?.type };
+  });
+
+  const tagComponent = tags ? (
+    <HStack spacing={4} color='gray.400'>
+      <Tag>{tags[0].type}</Tag>
+      <Tag>{tags[0].lube}</Tag>
+      <Tag>{tags[0].film}</Tag>
+    </HStack>
+  ) : null;
+
   return (
-    <Box border='4px solid'>
+    <Box border='4px solid' mt={4} mb={4}>
       <Flex
         // align={'center'}
         justifyContent={'space-between'}
@@ -83,11 +95,7 @@ function Card({ post }: Props): ReactElement {
         justifyContent={'space-between'}
         align={'center'}
       >
-        <HStack spacing={4} color='gray.400'>
-          <Tag>type</Tag>
-          <Tag>lube</Tag>
-          <Tag>film</Tag>
-        </HStack>
+        {tagComponent}
         <Box>
           <ButtonGroup>
             <Button bg='none'>like</Button>

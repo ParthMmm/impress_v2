@@ -1,10 +1,19 @@
 import { Box, Text, Flex, Heading } from '@chakra-ui/react';
 import React, { ReactElement } from 'react';
-import CreatePost from './Post/CreatePost';
+import CreatePost from '../Post/CreatePost';
+import { currentUser, User } from '../../interfaces';
+import { useQueryClient } from 'react-query';
+import UserHeading from './UserHeading';
+import Search from './Search';
 
 interface Props {}
 
 function Sidebar({}: Props): ReactElement {
+  const queryClient = useQueryClient();
+
+  const currentUser: currentUser | undefined =
+    queryClient.getQueryData('CurrentUser');
+
   return (
     <Flex h='20%' zIndex={0} mt='48'>
       <Flex width={'350px'} position={'fixed'}>
@@ -16,10 +25,11 @@ function Sidebar({}: Props): ReactElement {
           justifyContent={'flex-start'}
           flexDir={'column'}
         >
-          <Heading>sidebar</Heading>
-          <Flex alignItems={'center'} justifyContent={'center'}>
-            <CreatePost />
+          <UserHeading />
+          <Flex alignItems={'center'} justifyContent={'flex-start'}>
+            {currentUser?.currentUser?.id ? <CreatePost /> : <></>}
           </Flex>
+          <Search />
         </Flex>
       </Flex>
     </Flex>

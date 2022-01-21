@@ -11,7 +11,7 @@ type Query {
   getLubes: [Lube]
   tester: String
   getFilms: [Film]
-  getPosts: [DataPost]
+  getPosts(range: Int): [DataPost]
 }
 
 type Mutation {
@@ -19,6 +19,8 @@ type Mutation {
   logIn(username: String, password: String): User
   logOut: User
   createPost(post: PostInput): id
+  likePost(id: String): String
+  dislikePost(id: String): String
 }
 
 input userSignUpInput {
@@ -71,6 +73,8 @@ type DataPost {
   createdAt: Date
   file_: String
   tags: [Tag]
+  likes: Int
+  dislikes: Int
 }
 
 type Tag {

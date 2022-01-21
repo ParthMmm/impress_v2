@@ -36,7 +36,7 @@ import {
   useCreatePostMutation,
 } from '../../generates';
 import client from '../../app/request-client';
-import { RiImage2Line } from 'react-icons/ri';
+import { RiImage2Line, RiAddFill } from 'react-icons/ri';
 import { useQueryClient } from 'react-query';
 import { CreatePostValues, currentUser } from '../../interfaces';
 import axios from 'axios';
@@ -180,8 +180,18 @@ function CreatePost({}: Props): ReactElement {
 
   if (lubesQuery.data?.getLubes && filmsQuery.data?.getFilms) {
     return (
-      <Flex>
-        <Button onClick={onOpen}>create post</Button>
+      <Flex px='4' pb='1'>
+        <Button
+          onClick={onOpen}
+          leftIcon={<RiAddFill />}
+          bg='0'
+          border={'2px solid'}
+          borderColor={colorMode === 'light' ? 'white' : 'black'}
+          _hover={{ border: '2px solid ' }}
+          rounded={'0'}
+        >
+          create post
+        </Button>
 
         <CreatePostModal onOpen={onOpen} isOpen={isOpen} onClose={onClose} />
       </Flex>
