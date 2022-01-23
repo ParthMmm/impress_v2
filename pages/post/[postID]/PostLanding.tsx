@@ -1,10 +1,12 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { Flex, Box, Grid, GridItem, Spacer } from '@chakra-ui/react';
-import Posts from './Post/Posts';
-import Sidebar from './Sidebar/Sidebar';
-interface Props {}
+import Header from '@/components/Header';
+import PostController from '@/components/Post/PostController';
+import Sidebar from '@/components/Sidebar/Sidebar';
 
-function Landing({}: Props): ReactElement {
+type Props = {};
+
+function PostLanding({}: Props) {
   return (
     <>
       <Flex
@@ -17,11 +19,11 @@ function Landing({}: Props): ReactElement {
         overflowY={'hidden'}
       >
         <Box />
-        <Posts />
+        <PostController />
         <Sidebar />
       </Flex>
     </>
   );
 }
 
-export default Landing;
+export default PostLanding;

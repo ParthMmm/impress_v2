@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import {
   Flex,
   Text,
@@ -8,8 +8,11 @@ import {
   Button,
   ButtonGroup,
   HStack,
+  useToast,
 } from '@chakra-ui/react';
 import Image from 'next/image';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { useRouter } from 'next/router';
 
 interface Props {
   post: Post | undefined | null;
@@ -47,9 +50,21 @@ interface Post {
 }
 
 function Card({ post }: Props): ReactElement {
+  const [path, setPath] = useState('');
+  const [copied, setCopied] = useState(false);
+
+  const toast = useToast();
+  const { asPath } = useRouter();
+
   const tags = post?.tags?.map((a) => {
     return { film: a?.film, lube: a?.lube, type: a?.type };
   });
+
+  console.log(path);
+
+  useEffect(() => {
+    setPath(`${process.env.NEXT_PUBLIC_FRONTEND_SERVER}` + `post/${post?.id}`);
+  }, [post?.id]);
 
   const tagComponent = tags ? (
     <HStack spacing={4} color='gray.400'>
@@ -70,10 +85,23 @@ function Card({ post }: Props): ReactElement {
           <Heading>{post?.title}</Heading>
           <Text>{post?.author?.username}</Text>
         </Box>
-
-        <Button mt={2} mr={2}>
-          share
-        </Button>
+        <CopyToClipboard text={path} onCopy={() => setCopied(true)}>
+          <Button
+            mt={2}
+            mr={2}
+            onClick={() =>
+              toast({
+                title: 'Copied to Clipboard',
+                status: 'success',
+                duration: 2000,
+                isClosable: true,
+                variant: 'subtle',
+              })
+            }
+          >
+            share
+          </Button>
+        </CopyToClipboard>
       </Flex>
       <Box
         d='block'

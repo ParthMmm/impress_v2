@@ -66,7 +66,7 @@ function Header({}: Props): ReactElement {
               // color='white'
               size='lg'
             />
-            <MenuList bg={colorMode === 'light' ? 'white' : 'black'}>
+            <MenuList bg={colorMode === 'light' ? 'white' : 'black'} h='0'>
               <MenuItem icon={<RiUser4Fill />}>profile</MenuItem>
               <MenuItem icon={<RiSettings4Line />}>settings</MenuItem>
               <MenuItem icon={<RiLogoutBoxLine />} onClick={() => mutate({})}>

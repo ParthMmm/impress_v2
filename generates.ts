@@ -108,6 +108,7 @@ export type Query = {
   getFilms?: Maybe<Array<Maybe<Film>>>;
   getLubes?: Maybe<Array<Maybe<Lube>>>;
   getPosts?: Maybe<Array<Maybe<DataPost>>>;
+  getSinglePost?: Maybe<DataPost>;
   test?: Maybe<Scalars['String']>;
   tester?: Maybe<Scalars['String']>;
 };
@@ -115,6 +116,11 @@ export type Query = {
 
 export type QueryGetPostsArgs = {
   range?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryGetSinglePostArgs = {
+  id?: InputMaybe<Scalars['String']>;
 };
 
 export type Tag = {
@@ -193,6 +199,13 @@ export type GetPostsQueryVariables = Exact<{
 
 
 export type GetPostsQuery = { __typename?: 'Query', getPosts?: Array<{ __typename?: 'DataPost', id?: string | null | undefined, title?: string | null | undefined, description?: string | null | undefined, file_?: string | null | undefined, createdAt?: any | null | undefined, tags?: Array<{ __typename?: 'Tag', type?: string | null | undefined, lube?: string | null | undefined, film?: string | null | undefined } | null | undefined> | null | undefined, author?: { __typename?: 'User', username?: string | null | undefined, id?: string | null | undefined } | null | undefined } | null | undefined> | null | undefined };
+
+export type GetSinglePostQueryVariables = Exact<{
+  getSinglePostId?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetSinglePostQuery = { __typename?: 'Query', getSinglePost?: { __typename?: 'DataPost', id?: string | null | undefined, title?: string | null | undefined, description?: string | null | undefined, file_?: string | null | undefined, createdAt?: any | null | undefined, tags?: Array<{ __typename?: 'Tag', type?: string | null | undefined, lube?: string | null | undefined, film?: string | null | undefined } | null | undefined> | null | undefined, author?: { __typename?: 'User', username?: string | null | undefined, id?: string | null | undefined } | null | undefined } | null | undefined };
 
 
 export const GetFilmsDocument = `
@@ -440,5 +453,55 @@ export const useInfiniteGetPostsQuery = <
     useInfiniteQuery<GetPostsQuery, TError, TData>(
       variables === undefined ? ['GetPosts.infinite'] : ['GetPosts.infinite', variables],
       (metaData) => fetcher<GetPostsQuery, GetPostsQueryVariables>(client, GetPostsDocument, {...variables, ...(metaData.pageParam ?? {})}, headers)(),
+      options
+    );
+
+export const GetSinglePostDocument = `
+    query getSinglePost($getSinglePostId: String) {
+  getSinglePost(id: $getSinglePostId) {
+    id
+    title
+    description
+    file_
+    tags {
+      type
+      lube
+      film
+    }
+    createdAt
+    author {
+      username
+      id
+    }
+  }
+}
+    `;
+export const useGetSinglePostQuery = <
+      TData = GetSinglePostQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables?: GetSinglePostQueryVariables,
+      options?: UseQueryOptions<GetSinglePostQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<GetSinglePostQuery, TError, TData>(
+      variables === undefined ? ['getSinglePost'] : ['getSinglePost', variables],
+      fetcher<GetSinglePostQuery, GetSinglePostQueryVariables>(client, GetSinglePostDocument, variables, headers),
+      options
+    );
+export const useInfiniteGetSinglePostQuery = <
+      TData = GetSinglePostQuery,
+      TError = unknown
+    >(
+      pageParamKey: keyof GetSinglePostQueryVariables,
+      client: GraphQLClient,
+      variables?: GetSinglePostQueryVariables,
+      options?: UseInfiniteQueryOptions<GetSinglePostQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useInfiniteQuery<GetSinglePostQuery, TError, TData>(
+      variables === undefined ? ['getSinglePost.infinite'] : ['getSinglePost.infinite', variables],
+      (metaData) => fetcher<GetSinglePostQuery, GetSinglePostQueryVariables>(client, GetSinglePostDocument, {...variables, ...(metaData.pageParam ?? {})}, headers)(),
       options
     );

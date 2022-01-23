@@ -12,6 +12,7 @@ type Query {
   tester: String
   getFilms: [Film]
   getPosts(range: Int): [DataPost]
+  getSinglePost(id: String): DataPost
 }
 
 type Mutation {

@@ -23,3 +23,22 @@ query GetPosts($range: Int) {
     }
   }
 }
+
+query getSinglePost($getSinglePostId: String) {
+  getSinglePost(id: $getSinglePostId) {
+    id
+    title
+    description
+    file_
+    tags {
+      type
+      lube
+      film
+    }
+    createdAt
+    author {
+      username
+      id
+    }
+  }
+}
