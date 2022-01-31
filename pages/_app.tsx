@@ -7,7 +7,14 @@ import client from '../app/apollo-client';
 import theme from '../styles/theme';
 import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import NProgress from 'nprogress'; //nprogress module
+import 'nprogress/nprogress.css'; //styles of nprogress
+import Router from 'next/router';
 const queryClient = new QueryClient();
+
+Router.events.on('routeChangeStart', () => NProgress.start());
+Router.events.on('routeChangeComplete', () => NProgress.done());
+Router.events.on('routeChangeError', () => NProgress.done());
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
