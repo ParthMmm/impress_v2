@@ -5,6 +5,8 @@ const server = process.env.NEXT_PUBLIC_SERVER;
 const requestHeaders = {
   authorization: 'Bearer MY_TOKEN',
 };
+
+//@ts-ignore
 const client = new GraphQLClient(server, {
   headers: requestHeaders,
   credentials: 'include',
