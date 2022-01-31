@@ -15,7 +15,7 @@ function Title({ fontSize }: Props): ReactElement {
       <Link
         href='/'
         textDecoration={'none'}
-        bgGradient='linear(to-l, #bdc3c7,#2C5364)'
+        bgGradient='linear(to-r, #4776E6,#8E54E9)'
         bgClip={'text'}
       >
         <Heading
@@ -31,7 +31,7 @@ function Title({ fontSize }: Props): ReactElement {
         </Heading>
         <Heading
           as='span'
-          _hover={{ color: '#bdc3c7' }}
+          // _hover={{ color: '#bdc3c7' }}
           transition={'color ease-in-out 0.2s'}
           fontSize={fontSize}
         >

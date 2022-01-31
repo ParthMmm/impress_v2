@@ -2,6 +2,6 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ['i.redd.it'],
+    domains: ['i.redd.it', 'impress-images.s3.amazonaws.com'],
   },
 };

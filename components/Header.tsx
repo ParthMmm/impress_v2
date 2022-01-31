@@ -16,17 +16,8 @@ import { useQueryClient } from 'react-query';
 import { RiUser4Fill, RiSettings4Line, RiLogoutBoxLine } from 'react-icons/ri';
 import { useLogOutMutation } from '../generates';
 import client from '../app/request-client';
-
+import { currentUser, User } from '../interfaces';
 interface Props {}
-
-interface User {
-  id: number;
-  username: string;
-}
-interface currentUser {
-  currentUser: User;
-  a: number;
-}
 
 function Header({}: Props): ReactElement {
   const router = useRouter();
@@ -46,10 +37,11 @@ function Header({}: Props): ReactElement {
     return (
       <Flex
         w={'full'}
-        pos={'sticky'}
+        pos={'fixed'}
         bg={colorMode === 'light' ? 'white' : 'black'}
         top={0}
         zIndex={2}
+        // overflow={'hidden'}
       >
         <Flex
           alignItems='center'
@@ -74,7 +66,7 @@ function Header({}: Props): ReactElement {
               // color='white'
               size='lg'
             />
-            <MenuList bg={colorMode === 'light' ? 'white' : 'black'}>
+            <MenuList bg={colorMode === 'light' ? 'white' : 'black'} h='0'>
               <MenuItem icon={<RiUser4Fill />}>profile</MenuItem>
               <MenuItem icon={<RiSettings4Line />}>settings</MenuItem>
               <MenuItem icon={<RiLogoutBoxLine />} onClick={() => mutate({})}>

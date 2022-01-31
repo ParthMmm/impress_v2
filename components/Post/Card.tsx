@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import {
   Flex,
   Text,
@@ -8,33 +8,98 @@ import {
   Button,
   ButtonGroup,
   HStack,
+  useToast,
 } from '@chakra-ui/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 interface Props {
-  //   data: Post;
+  post: Post | undefined | null;
+  // post: Post;
 }
 
 interface Post {
-  title: string;
-  image: string;
+  __typename?: 'DataPost';
+  id?: string | null | undefined;
+  title?: string | null | undefined;
+  description?: string | null | undefined;
+  file_?: string | null | undefined;
+  createdAt?: any | null | undefined;
+  tags?:
+    | Array<
+        | {
+            __typename?: 'Tag';
+            type?: string | null | undefined;
+            lube?: string | null | undefined;
+            film?: string | null | undefined;
+          }
+        | null
+        | undefined
+      >
+    | null
+    | undefined;
+  author?:
+    | {
+        __typename?: 'User';
+        username?: string | null | undefined;
+        id?: string | null | undefined;
+      }
+    | null
+    | undefined;
 }
 
-function Card({}: Props): ReactElement {
+function Card({ post }: Props): ReactElement {
+  const [path, setPath] = useState('');
+  const [copied, setCopied] = useState(false);
+
+  const toast = useToast();
+  const { asPath } = useRouter();
+
+  const tags = post?.tags?.map((a) => {
+    return { film: a?.film, lube: a?.lube, type: a?.type };
+  });
+
+  useEffect(() => {
+    setPath(`${process.env.NEXT_PUBLIC_FRONTEND_SERVER}` + `post/${post?.id}`);
+  }, [post?.id]);
+
+  const tagComponent = tags ? (
+    <HStack spacing={4} color='gray.400'>
+      <Tag>{tags[0].type}</Tag>
+      <Tag>{tags[0].lube}</Tag>
+      <Tag>{tags[0].film}</Tag>
+    </HStack>
+  ) : null;
+
   return (
-    <Box border='4px solid' mt='16'>
+    <Box border='4px solid' mt={4} mb={4}>
       <Flex
         // align={'center'}
         justifyContent={'space-between'}
         flexDirection={'row'}
       >
         <Box mx={'6'} my={'2'}>
-          <Heading>title</Heading>
-          <Text>user</Text>
+          <Heading>{post?.title}</Heading>
+          <Text>{post?.author?.username}</Text>
         </Box>
-
-        <Button mt={2} mr={2}>
-          share
-        </Button>
+        <CopyToClipboard text={path} onCopy={() => setCopied(true)}>
+          <Button
+            mt={2}
+            mr={2}
+            onClick={() =>
+              toast({
+                title: 'Copied to Clipboard',
+                status: 'success',
+                duration: 2000,
+                isClosable: true,
+                variant: 'subtle',
+              })
+            }
+          >
+            share
+          </Button>
+        </CopyToClipboard>
       </Flex>
       <Box
         d='block'
@@ -43,7 +108,7 @@ function Card({}: Props): ReactElement {
         borderBottom={'2px solid'}
       >
         <Image
-          src='https://i.redd.it/22sfgweo1w171.jpg'
+          src={post?.file_ as string}
           alt='poop'
           width={400}
           height={400}
@@ -56,11 +121,7 @@ function Card({}: Props): ReactElement {
         justifyContent={'space-between'}
         align={'center'}
       >
-        <HStack spacing={4} color='gray.400'>
-          <Tag>type</Tag>
-          <Tag>lube</Tag>
-          <Tag>film</Tag>
-        </HStack>
+        {tagComponent}
         <Box>
           <ButtonGroup>
             <Button bg='none'>like</Button>
@@ -69,7 +130,7 @@ function Card({}: Props): ReactElement {
         </Box>
       </Flex>
       <Flex mx='2' my='2'>
-        <Text>description</Text>
+        <Text>{post?.description}</Text>
       </Flex>
     </Box>
   );

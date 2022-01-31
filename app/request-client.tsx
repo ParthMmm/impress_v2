@@ -1,9 +1,13 @@
 import { request, GraphQLClient } from 'graphql-request';
 
+const server = process.env.NEXT_PUBLIC_SERVER;
+
 const requestHeaders = {
   authorization: 'Bearer MY_TOKEN',
 };
-const client = new GraphQLClient('http://localhost:8000/graphql', {
+
+//@ts-ignore
+const client = new GraphQLClient(server, {
   headers: requestHeaders,
   credentials: 'include',
 });

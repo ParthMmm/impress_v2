@@ -2,19 +2,85 @@ type User {
   id: String
   username: String
   password: String
+  user: String
 }
 
 type Query {
   currentUser: User!
+  test: String
+  getLubes: [Lube]
+  tester: String
+  getFilms: [Film]
+  getPosts(range: Int): [DataPost]
+  getSinglePost(id: String): DataPost
 }
 
 type Mutation {
   signUp(username: String, password: String): User
   logIn(username: String, password: String): User
   logOut: User
+  createPost(post: PostInput): id
+  likePost(id: String): String
+  dislikePost(id: String): String
 }
 
 input userSignUpInput {
   username: String!
   password: String!
+}
+
+type Lube {
+  id: Int
+  name: String
+}
+
+type Film {
+  id: Int
+  name: String
+}
+
+scalar Upload
+
+scalar Date
+
+type Post {
+  title: String
+  description: String
+  type: String
+  lube: String
+  film: String
+  file_: String
+}
+
+input PostInput {
+  title: String
+  description: String
+  type: String
+  lube: String
+  film: String
+  file_: String
+}
+
+type id {
+  id: String
+  title: String
+}
+
+type DataPost {
+  id: String
+  title: String
+  description: String
+  author: User
+  createdAt: Date
+  file_: String
+  tags: [Tag]
+  likes: Int
+  dislikes: Int
+}
+
+type Tag {
+  id: String
+  type: String
+  lube: String
+  film: String
 }

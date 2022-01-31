@@ -1,0 +1,45 @@
+mutation CreatePost($post: PostInput) {
+  createPost(post: $post) {
+    id
+    title
+  }
+}
+
+query GetPosts($range: Int) {
+  getPosts(range: $range) {
+    id
+    title
+    description
+    file_
+    tags {
+      type
+      lube
+      film
+    }
+    createdAt
+    author {
+      username
+      id
+    }
+  }
+}
+
+query getSinglePost($getSinglePostId: String) {
+  getSinglePost(id: $getSinglePostId) {
+    id
+    title
+    description
+    file_
+    tags {
+      type
+      lube
+      film
+    }
+    createdAt
+    author {
+      username
+      id
+    }
+  }
+}
+
