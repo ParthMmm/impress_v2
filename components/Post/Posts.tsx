@@ -14,7 +14,6 @@ import {
 import Card from '../Post/Card';
 import client from '../../app/request-client';
 import { useInfiniteGetPostsQuery, useGetPostsQuery } from '../../generates';
-import { XRay } from 'aws-sdk';
 import { RiArrowLeftSFill, RiArrowRightSFill } from 'react-icons/ri';
 interface Props {}
 

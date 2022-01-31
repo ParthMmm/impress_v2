@@ -11,9 +11,9 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import Image from 'next/image';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useRouter } from 'next/router';
 
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 interface Props {
   post: Post | undefined | null;
   // post: Post;
