@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import Card from './Card';
 import client from '../../app/request-client';
-import { Spinner } from '@chakra-ui/react';
+import { Box, Flex, Spinner, Text } from '@chakra-ui/react';
 type Props = {};
 
 function PostController({}: Props) {
@@ -27,12 +27,18 @@ function PostController({}: Props) {
   }
   if (isLoading) {
     return (
-      <>
-        <Spinner />
-      </>
+      <Box border='4px solid' mt={4} mb={4}>
+        <Flex justifyContent={'space-between'} flexDirection={'row'}>
+          <Spinner />
+        </Flex>
+      </Box>
     );
   }
-  return <></>;
+  return (
+    <>
+      <Text>error 🙁</Text>
+    </>
+  );
 }
 
 export default PostController;

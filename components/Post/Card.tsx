@@ -60,8 +60,6 @@ function Card({ post }: Props): ReactElement {
     return { film: a?.film, lube: a?.lube, type: a?.type };
   });
 
-  console.log(path);
-
   useEffect(() => {
     setPath(`${process.env.NEXT_PUBLIC_FRONTEND_SERVER}` + `post/${post?.id}`);
   }, [post?.id]);

@@ -42,3 +42,4 @@ query getSinglePost($getSinglePostId: String) {
     }
   }
 }
+
