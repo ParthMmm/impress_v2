@@ -91,6 +91,8 @@ function CreatePostModal({ onOpen, onClose, isOpen }: Props): ReactElement {
   const { mutate, data }: any = useCreatePostMutation(client, {
     onSuccess: (data) => {
       setPostSuccess(true);
+      queryClient.invalidateQueries('getTotalPosts');
+      queryClient.invalidateQueries('GetPosts.infinite');
     },
   });
 

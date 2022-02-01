@@ -13,6 +13,8 @@ type Query {
   getFilms: [Film]
   getPosts(range: Int): [DataPost]
   getSinglePost(id: String): DataPost
+  getTotalPosts: Int
+  getByType(type: String): [DataPost]
 }
 
 type Mutation {
@@ -38,8 +40,6 @@ type Film {
   id: Int
   name: String
 }
-
-scalar Upload
 
 scalar Date
 

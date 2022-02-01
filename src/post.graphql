@@ -43,3 +43,6 @@ query getSinglePost($getSinglePostId: String) {
   }
 }
 
+query getTotalPosts {
+  getTotalPosts
+}

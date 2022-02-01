@@ -18,7 +18,6 @@ export type Scalars = {
   Int: number;
   Float: number;
   Date: any;
-  Upload: any;
 };
 
 export type DataPost = {
@@ -105,12 +104,19 @@ export type PostInput = {
 export type Query = {
   __typename?: 'Query';
   currentUser: User;
+  getByType?: Maybe<Array<Maybe<DataPost>>>;
   getFilms?: Maybe<Array<Maybe<Film>>>;
   getLubes?: Maybe<Array<Maybe<Lube>>>;
   getPosts?: Maybe<Array<Maybe<DataPost>>>;
   getSinglePost?: Maybe<DataPost>;
+  getTotalPosts?: Maybe<Scalars['Int']>;
   test?: Maybe<Scalars['String']>;
   tester?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryGetByTypeArgs = {
+  type?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -206,6 +212,11 @@ export type GetSinglePostQueryVariables = Exact<{
 
 
 export type GetSinglePostQuery = { __typename?: 'Query', getSinglePost?: { __typename?: 'DataPost', id?: string | null | undefined, title?: string | null | undefined, description?: string | null | undefined, file_?: string | null | undefined, createdAt?: any | null | undefined, tags?: Array<{ __typename?: 'Tag', type?: string | null | undefined, lube?: string | null | undefined, film?: string | null | undefined } | null | undefined> | null | undefined, author?: { __typename?: 'User', username?: string | null | undefined, id?: string | null | undefined } | null | undefined } | null | undefined };
+
+export type GetTotalPostsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetTotalPostsQuery = { __typename?: 'Query', getTotalPosts?: number | null | undefined };
 
 
 export const GetFilmsDocument = `
@@ -503,5 +514,40 @@ export const useInfiniteGetSinglePostQuery = <
     useInfiniteQuery<GetSinglePostQuery, TError, TData>(
       variables === undefined ? ['getSinglePost.infinite'] : ['getSinglePost.infinite', variables],
       (metaData) => fetcher<GetSinglePostQuery, GetSinglePostQueryVariables>(client, GetSinglePostDocument, {...variables, ...(metaData.pageParam ?? {})}, headers)(),
+      options
+    );
+
+export const GetTotalPostsDocument = `
+    query getTotalPosts {
+  getTotalPosts
+}
+    `;
+export const useGetTotalPostsQuery = <
+      TData = GetTotalPostsQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables?: GetTotalPostsQueryVariables,
+      options?: UseQueryOptions<GetTotalPostsQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<GetTotalPostsQuery, TError, TData>(
+      variables === undefined ? ['getTotalPosts'] : ['getTotalPosts', variables],
+      fetcher<GetTotalPostsQuery, GetTotalPostsQueryVariables>(client, GetTotalPostsDocument, variables, headers),
+      options
+    );
+export const useInfiniteGetTotalPostsQuery = <
+      TData = GetTotalPostsQuery,
+      TError = unknown
+    >(
+      pageParamKey: keyof GetTotalPostsQueryVariables,
+      client: GraphQLClient,
+      variables?: GetTotalPostsQueryVariables,
+      options?: UseInfiniteQueryOptions<GetTotalPostsQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useInfiniteQuery<GetTotalPostsQuery, TError, TData>(
+      variables === undefined ? ['getTotalPosts.infinite'] : ['getTotalPosts.infinite', variables],
+      (metaData) => fetcher<GetTotalPostsQuery, GetTotalPostsQueryVariables>(client, GetTotalPostsDocument, {...variables, ...(metaData.pageParam ?? {})}, headers)(),
       options
     );
