@@ -139,8 +139,8 @@ function CreatePost({}: Props): ReactElement {
 
   const { mutate, data }: any = useCreatePostMutation(client, {
     onSuccess: (data) => {
-      console.log({ post: data });
-      Toasts;
+      // console.log({ post: data });
+      // Toasts;
     },
   });
 
@@ -154,8 +154,6 @@ function CreatePost({}: Props): ReactElement {
     });
     const formData = new FormData();
 
-    console.log(x.data);
-
     Object.entries(x.data.post.fields).forEach(([k, v]: string | any) => {
       formData.append(k, v);
     });
@@ -166,9 +164,6 @@ function CreatePost({}: Props): ReactElement {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
       .then(() => {
-        console.log('🎉', x.data.link);
-        console.log(data);
-
         data['file_'] = x.data.link;
         mutate({ post: data });
         setFile('');
@@ -176,7 +171,6 @@ function CreatePost({}: Props): ReactElement {
       })
       .catch((errors) => console.log(errors));
   };
-  let img = queryClient.getQueryData('image');
 
   if (lubesQuery.data?.getLubes && filmsQuery.data?.getFilms) {
     return (

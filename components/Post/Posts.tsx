@@ -1,23 +1,21 @@
 import React, { ReactElement, useState, useRef, useEffect } from 'react';
 import {
   Flex,
-  Box,
-  Grid,
-  GridItem,
-  Spacer,
   Text,
   Button,
-  VStack,
   HStack,
   useColorMode,
+  Spinner,
 } from '@chakra-ui/react';
 import Card from '../Post/Card';
 import client from '../../app/request-client';
-import { useInfiniteGetPostsQuery, useGetPostsQuery } from '../../generates';
+import { useInfiniteGetPostsQuery } from '../../generates';
 import { RiArrowLeftSFill, RiArrowRightSFill } from 'react-icons/ri';
-interface Props {}
+interface Props {
+  totalPosts: number;
+}
 
-function Posts({}: Props): ReactElement {
+function Posts({ totalPosts }: Props): ReactElement {
   const [queryParams] = useState({ limit: 4 });
   const [pageParam, setPageParam] = useState(0);
   const { colorMode } = useColorMode();
@@ -32,6 +30,7 @@ function Posts({}: Props): ReactElement {
     isFetchingNextPage,
     isFetchingPreviousPage,
     fetchNextPage,
+    isLoading,
   } = useInfiniteGetPostsQuery(
     'range',
     client,
@@ -76,7 +75,7 @@ function Posts({}: Props): ReactElement {
   // );
 
   // console.log(range);
-
+  // console.log(isLoading);
   const listInnerRef = useRef(null);
 
   const executeScroll = () => {
@@ -103,7 +102,39 @@ function Posts({}: Props): ReactElement {
 
   const topRef = useRef<HTMLDivElement>(null);
 
-  return (
+  const paginationComponent =
+    totalPosts > 5 ? (
+      <Flex
+        flexDir={'row'}
+        justifyContent={'space-between'}
+        align={'center'}
+        mt={'4'}
+        mb={'12'}
+      >
+        <HStack spacing={'12rem'}>
+          {' '}
+          {pageParam > 0 ? (
+            <Button onClick={() => prevPage()} leftIcon={<RiArrowLeftSFill />}>
+              prev page
+            </Button>
+          ) : (
+            <Button visibility={'hidden'}></Button>
+          )}
+          {pageParam + 5 > totalPosts ? (
+            <Button visibility={'hidden'}></Button>
+          ) : (
+            <Button
+              onClick={() => nextPage()}
+              rightIcon={<RiArrowRightSFill />}
+            >
+              next page
+            </Button>
+          )}
+        </HStack>
+      </Flex>
+    ) : null;
+
+  if (isLoading) {
     <Flex
       justifyContent={'center'}
       alignItems={'center'}
@@ -115,45 +146,53 @@ function Posts({}: Props): ReactElement {
       // p='5rem'
       ref={topRef}
     >
-      {data?.pages.map((post, i) => {
-        return (
-          <React.Fragment key={i}>
-            {post.getPosts?.map((x) => (
-              <Card key={x?.id} post={x} />
-            ))}
-          </React.Fragment>
-        );
-      })}
-
+      <Spinner />
+    </Flex>;
+  }
+  if (data) {
+    return (
       <Flex
-        flexDir={'row'}
-        justifyContent={'space-between'}
-        align={'center'}
-        mt={'4'}
-        mb={'12'}
+        justifyContent={'center'}
+        alignItems={'center'}
+        h='100%'
+        flexDir={'column'}
+        overflowY={'scroll'}
+        zIndex={1}
+        mt='7rem'
+        // p='5rem'
+        ref={topRef}
       >
-        <HStack spacing={'12rem'}>
-          {' '}
-          <Button onClick={() => prevPage()} leftIcon={<RiArrowLeftSFill />}>
-            prev page
-          </Button>
-          <Button onClick={() => nextPage()} rightIcon={<RiArrowRightSFill />}>
-            next page
-          </Button>
-        </HStack>
+        {data?.pages.map((post, i) => {
+          return (
+            <React.Fragment key={i}>
+              {post.getPosts?.map((x) => (
+                <Card key={x?.id} post={x} />
+              ))}
+            </React.Fragment>
+          );
+        })}
+        {paginationComponent}
       </Flex>
-    </Flex>
-  );
+    );
+  } else {
+    return (
+      <Flex
+        justifyContent={'center'}
+        alignItems={'center'}
+        h='100%'
+        flexDir={'column'}
+        overflowY={'scroll'}
+        zIndex={1}
+        mt='7rem'
+        // p='5rem'
+        ref={topRef}
+      >
+        <Spinner />
+
+        {/* <Text>something went wrong</Text> */}
+      </Flex>
+    );
+  }
 }
 
 export default Posts;
-
-// (alias) useGetPostsQuery<GetPostsQuery, unknown>(client: GraphQLClient, variables?: Exact<{
-//   range?: InputMaybe<number> | undefined;
-// }> | undefined, options?: UseQueryOptions<GetPostsQuery, unknown, GetPostsQuery, QueryKey> | undefined, headers?: HeadersInit | undefined): UseQueryResult<...>
-// import useGetPostsQuery
-
-// (alias) useInfiniteGetPostsQuery<GetPostsQuery, unknown>(pageParamKey: "range", client: GraphQLClient, variables?: Exact<{
-//   range?: InputMaybe<number> | undefined;
-// }> | undefined, options?: UseInfiniteQueryOptions<...> | undefined, headers?: HeadersInit | undefined): UseInfiniteQueryResult<...>
-// import useInfiniteGetPostsQuery

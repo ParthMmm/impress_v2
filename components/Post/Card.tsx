@@ -93,7 +93,7 @@ function Card({ post }: Props): ReactElement {
                 status: 'success',
                 duration: 2000,
                 isClosable: true,
-                variant: 'subtle',
+                variant: 'top-accent',
               })
             }
           >

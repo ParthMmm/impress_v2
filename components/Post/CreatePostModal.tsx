@@ -28,6 +28,8 @@ import {
   Image,
   Box,
   Tooltip,
+  Spinner,
+  Center,
 } from '@chakra-ui/react';
 import { useForm, UseFormRegisterReturn } from 'react-hook-form';
 import {
@@ -44,6 +46,7 @@ import { useDropzone } from 'react-dropzone';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Toasts from '../Auth/Toasts';
+import Link from 'next/link';
 
 interface Props {
   onOpen: () => void;
@@ -56,7 +59,8 @@ function CreatePostModal({ onOpen, onClose, isOpen }: Props): ReactElement {
   const [file, setFile] = useState('');
   const [fileInfo, setFileInfo] = useState(null);
   const [postSuccess, setPostSuccess] = useState(false);
-
+  const [isLoading, setLoading] = useState(true);
+  const [title, setTitle] = useState('');
   const lubesQuery = useGetLubesQuery(client);
   const filmsQuery = useGetFilmsQuery(client);
   const queryClient = useQueryClient();
@@ -90,13 +94,17 @@ function CreatePostModal({ onOpen, onClose, isOpen }: Props): ReactElement {
 
   const { mutate, data }: any = useCreatePostMutation(client, {
     onSuccess: (data) => {
+      setLoading(false);
       setPostSuccess(true);
+      queryClient.invalidateQueries('getTotalPosts');
+      queryClient.invalidateQueries('GetPosts.infinite');
     },
   });
 
   const onSubmit = async (data: CreatePostValues) => {
     const formData = new FormData();
-
+    setLoading(true);
+    setTitle(data.title);
     axios
       .post('/api/uploadImage', {
         fileName: acceptedFiles[0].name,
@@ -115,8 +123,6 @@ function CreatePostModal({ onOpen, onClose, isOpen }: Props): ReactElement {
             headers: { 'Content-Type': 'multipart/form-data' },
           })
           .then(() => {
-            console.log('🎉', res.data.link);
-
             data['file_'] = res.data.link;
             mutate({ post: data });
             setFile('');
@@ -142,7 +148,12 @@ function CreatePostModal({ onOpen, onClose, isOpen }: Props): ReactElement {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
-  if (lubesQuery.data?.getLubes && filmsQuery.data?.getFilms && !postSuccess) {
+  if (
+    lubesQuery.data?.getLubes &&
+    filmsQuery.data?.getFilms &&
+    !postSuccess &&
+    !isLoading
+  ) {
     return (
       <Flex>
         <Modal onClose={onClose} isOpen={isOpen} isCentered>
@@ -319,6 +330,29 @@ function CreatePostModal({ onOpen, onClose, isOpen }: Props): ReactElement {
       </Flex>
     );
   }
+  if (isLoading) {
+    return (
+      <Flex>
+        <Modal onClose={onClose} isOpen={isOpen} isCentered>
+          <ModalOverlay />
+          <ModalContent
+            border={'2px solid'}
+            bg={colorMode === 'light' ? 'white' : 'black'}
+            borderColor={colorMode === 'light' ? 'black' : 'white'}
+          >
+            <ModalHeader>creating post {title} 🚧 </ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Center>
+                <Spinner />
+              </Center>
+            </ModalBody>
+            <ModalFooter></ModalFooter>
+          </ModalContent>
+        </Modal>
+      </Flex>
+    );
+  }
 
   if (postSuccess) {
     return (
@@ -334,7 +368,15 @@ function CreatePostModal({ onOpen, onClose, isOpen }: Props): ReactElement {
             <ModalCloseButton />
             <ModalBody>
               <VStack>
-                <Button>view post</Button>
+                <Link
+                  href={
+                    `${process.env.NEXT_PUBLIC_FRONTEND_SERVER}` +
+                    `post/${data?.createPost?.id}`
+                  }
+                  passHref
+                >
+                  <Button>view post</Button>
+                </Link>
               </VStack>
               <Flex
                 justifyContent={'space-between'}
