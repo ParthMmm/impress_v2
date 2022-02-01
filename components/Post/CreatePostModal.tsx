@@ -123,8 +123,6 @@ function CreatePostModal({ onOpen, onClose, isOpen }: Props): ReactElement {
             headers: { 'Content-Type': 'multipart/form-data' },
           })
           .then(() => {
-            console.log('🎉', res.data.link);
-
             data['file_'] = res.data.link;
             mutate({ post: data });
             setFile('');

@@ -16,8 +16,6 @@ function PostController({}: Props) {
     enabled: !!id,
   });
 
-  console.log(data);
-
   if (data) {
     return (
       <>

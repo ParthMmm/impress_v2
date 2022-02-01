@@ -75,7 +75,7 @@ function Posts({ totalPosts }: Props): ReactElement {
   // );
 
   // console.log(range);
-
+  // console.log(isLoading);
   const listInnerRef = useRef(null);
 
   const executeScroll = () => {
@@ -187,7 +187,9 @@ function Posts({ totalPosts }: Props): ReactElement {
         // p='5rem'
         ref={topRef}
       >
-        <Text>something went wrong</Text>
+        <Spinner />
+
+        {/* <Text>something went wrong</Text> */}
       </Flex>
     );
   }
