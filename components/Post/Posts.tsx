@@ -1,24 +1,15 @@
 import React, { ReactElement, useState, useRef, useEffect } from 'react';
 import {
   Flex,
-  Box,
-  Grid,
-  GridItem,
-  Spacer,
   Text,
   Button,
-  VStack,
   HStack,
   useColorMode,
   Spinner,
 } from '@chakra-ui/react';
 import Card from '../Post/Card';
 import client from '../../app/request-client';
-import {
-  useInfiniteGetPostsQuery,
-  useGetPostsQuery,
-  useGetTotalPostsQuery,
-} from '../../generates';
+import { useInfiniteGetPostsQuery } from '../../generates';
 import { RiArrowLeftSFill, RiArrowRightSFill } from 'react-icons/ri';
 interface Props {
   totalPosts: number;
@@ -53,9 +44,6 @@ function Posts({ totalPosts }: Props): ReactElement {
       },
     }
   );
-
-  const totalQuery = useGetTotalPostsQuery(client);
-  console.log(totalQuery.data?.getTotalPosts);
 
   // console.log(data?.pageParams);
 
