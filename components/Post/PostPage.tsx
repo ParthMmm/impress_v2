@@ -6,7 +6,7 @@ import client from '../../app/request-client';
 import { Box, Flex, Spinner, Text } from '@chakra-ui/react';
 type Props = {};
 
-function PostController({}: Props) {
+function PostPage({}: Props) {
   const router = useRouter();
   const id: string | undefined = router.query.postID?.toString();
 
@@ -39,4 +39,4 @@ function PostController({}: Props) {
   );
 }
 
-export default PostController;
+export default PostPage;

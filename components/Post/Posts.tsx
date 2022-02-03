@@ -142,7 +142,7 @@ function Posts({ totalPosts }: Props): ReactElement {
       flexDir={'column'}
       overflowY={'scroll'}
       zIndex={1}
-      mt='7rem'
+      mt='3rem'
       // p='5rem'
       ref={topRef}
     >
@@ -158,8 +158,9 @@ function Posts({ totalPosts }: Props): ReactElement {
         flexDir={'column'}
         overflowY={'scroll'}
         zIndex={1}
-        mt='7rem'
+        mt='3rem'
         // p='5rem'
+        // mr='-10rem'
         ref={topRef}
       >
         {data?.pages.map((post, i) => {
@@ -183,7 +184,7 @@ function Posts({ totalPosts }: Props): ReactElement {
         flexDir={'column'}
         overflowY={'scroll'}
         zIndex={1}
-        mt='7rem'
+        mt='3rem'
         // p='5rem'
         ref={topRef}
       >
