@@ -21,7 +21,9 @@ const Home: NextPage = () => {
       <Box h='100%' overflowY={'hidden'}>
         <Landing />
       </Box>
-      <BottomNav />
+      <Box visibility={{ base: 'visible', md: 'visible', lg: 'hidden' }}>
+        <BottomNav />
+      </Box>
     </>
   );
 };

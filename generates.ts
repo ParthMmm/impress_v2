@@ -27,10 +27,13 @@ export type DataPost = {
   description?: Maybe<Scalars['String']>;
   dislikes?: Maybe<Scalars['Int']>;
   file_?: Maybe<Scalars['String']>;
+  film?: Maybe<Tag>;
   id?: Maybe<Scalars['String']>;
   likes?: Maybe<Scalars['Int']>;
+  lube?: Maybe<Tag>;
   tags?: Maybe<Array<Maybe<Tag>>>;
   title?: Maybe<Scalars['String']>;
+  type?: Maybe<Tag>;
 };
 
 export type Film = {
@@ -131,10 +134,8 @@ export type QueryGetSinglePostArgs = {
 
 export type Tag = {
   __typename?: 'Tag';
-  film?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['String']>;
-  lube?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
 };
 
 export type User = {
@@ -204,14 +205,14 @@ export type GetPostsQueryVariables = Exact<{
 }>;
 
 
-export type GetPostsQuery = { __typename?: 'Query', getPosts?: Array<{ __typename?: 'DataPost', id?: string | null | undefined, title?: string | null | undefined, description?: string | null | undefined, file_?: string | null | undefined, createdAt?: any | null | undefined, tags?: Array<{ __typename?: 'Tag', type?: string | null | undefined, lube?: string | null | undefined, film?: string | null | undefined } | null | undefined> | null | undefined, author?: { __typename?: 'User', username?: string | null | undefined, id?: string | null | undefined } | null | undefined } | null | undefined> | null | undefined };
+export type GetPostsQuery = { __typename?: 'Query', getPosts?: Array<{ __typename?: 'DataPost', id?: string | null | undefined, title?: string | null | undefined, description?: string | null | undefined, file_?: string | null | undefined, createdAt?: any | null | undefined, film?: { __typename?: 'Tag', name?: string | null | undefined } | null | undefined, lube?: { __typename?: 'Tag', name?: string | null | undefined } | null | undefined, type?: { __typename?: 'Tag', name?: string | null | undefined } | null | undefined, author?: { __typename?: 'User', username?: string | null | undefined, id?: string | null | undefined } | null | undefined } | null | undefined> | null | undefined };
 
 export type GetSinglePostQueryVariables = Exact<{
   getSinglePostId?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type GetSinglePostQuery = { __typename?: 'Query', getSinglePost?: { __typename?: 'DataPost', id?: string | null | undefined, title?: string | null | undefined, description?: string | null | undefined, file_?: string | null | undefined, createdAt?: any | null | undefined, tags?: Array<{ __typename?: 'Tag', type?: string | null | undefined, lube?: string | null | undefined, film?: string | null | undefined } | null | undefined> | null | undefined, author?: { __typename?: 'User', username?: string | null | undefined, id?: string | null | undefined } | null | undefined } | null | undefined };
+export type GetSinglePostQuery = { __typename?: 'Query', getSinglePost?: { __typename?: 'DataPost', id?: string | null | undefined, title?: string | null | undefined, description?: string | null | undefined, file_?: string | null | undefined, createdAt?: any | null | undefined, film?: { __typename?: 'Tag', name?: string | null | undefined } | null | undefined, lube?: { __typename?: 'Tag', name?: string | null | undefined } | null | undefined, type?: { __typename?: 'Tag', name?: string | null | undefined } | null | undefined, author?: { __typename?: 'User', username?: string | null | undefined, id?: string | null | undefined } | null | undefined } | null | undefined };
 
 export type GetTotalPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -424,10 +425,14 @@ export const GetPostsDocument = `
     title
     description
     file_
-    tags {
-      type
-      lube
-      film
+    film {
+      name
+    }
+    lube {
+      name
+    }
+    type {
+      name
     }
     createdAt
     author {
@@ -474,10 +479,14 @@ export const GetSinglePostDocument = `
     title
     description
     file_
-    tags {
-      type
-      lube
-      film
+    film {
+      name
+    }
+    lube {
+      name
+    }
+    type {
+      name
     }
     createdAt
     author {

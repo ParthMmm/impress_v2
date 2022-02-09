@@ -73,14 +73,15 @@ type DataPost {
   author: User
   createdAt: Date
   file_: String
-  tags: [Tag]
   likes: Int
   dislikes: Int
+  film: Tag
+  lube: Tag
+  type: Tag
+  tags: [Tag]
 }
 
 type Tag {
-  id: String
-  type: String
-  lube: String
-  film: String
+  id: Int
+  name: String
 }

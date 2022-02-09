@@ -1,6 +1,7 @@
 import React, { ReactElement, useState, useRef, useEffect } from 'react';
 import {
   Flex,
+  Box,
   Text,
   Button,
   HStack,
@@ -80,11 +81,12 @@ function Posts({ totalPosts }: Props): ReactElement {
 
   const executeScroll = () => {
     setTimeout(() => {
-      topRef.current &&
-        topRef.current.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start',
-        });
+      // topRef.current &&
+      // topRef.current.scrollIntoView({
+      //   behavior: 'smooth',
+      //   block: 'start',
+      // });
+      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
     }, 250);
   };
 
@@ -144,7 +146,6 @@ function Posts({ totalPosts }: Props): ReactElement {
       zIndex={1}
       mt='3rem'
       // p='5rem'
-      ref={topRef}
     >
       <Spinner />
     </Flex>;
@@ -161,7 +162,6 @@ function Posts({ totalPosts }: Props): ReactElement {
         mt='3rem'
         // p='5rem'
         // mr='-10rem'
-        ref={topRef}
       >
         {data?.pages.map((post, i) => {
           return (
@@ -186,7 +186,6 @@ function Posts({ totalPosts }: Props): ReactElement {
         zIndex={1}
         mt='3rem'
         // p='5rem'
-        ref={topRef}
       >
         <Spinner />
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Flex, Box, Grid, GridItem, Spacer } from '@chakra-ui/react';
 import Header from '@/components/Header';
-import PostController from '@/components/Post/PostController';
+import PostPage from '@/components/Post/PostPage';
 import Sidebar from '@/components/Sidebar/Sidebar';
 
 type Props = {};
@@ -19,7 +19,7 @@ function PostLanding({}: Props) {
         overflowY={'hidden'}
       >
         <Box />
-        <PostController />
+        <PostPage />
         <Sidebar />
       </Flex>
     </>

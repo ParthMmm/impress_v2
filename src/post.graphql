@@ -11,10 +11,14 @@ query GetPosts($range: Int) {
     title
     description
     file_
-    tags {
-      type
-      lube
-      film
+    film {
+      name
+    }
+    lube {
+      name
+    }
+    type {
+      name
     }
     createdAt
     author {
@@ -30,10 +34,14 @@ query getSinglePost($getSinglePostId: String) {
     title
     description
     file_
-    tags {
-      type
-      lube
-      film
+    film {
+      name
+    }
+    lube {
+      name
+    }
+    type {
+      name
     }
     createdAt
     author {
