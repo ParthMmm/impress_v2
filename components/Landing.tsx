@@ -14,16 +14,26 @@ function Landing({}: Props): ReactElement {
       <>
         <Flex
           h={'100%'}
-          maxW={'70%'}
+          w={{ base: '100%', md: '100%', lg: '95%' }}
           margin-left={'auto'}
           margin-right={'auto'}
-          justifyContent={'space-evenly'}
+          justifyContent={{
+            base: 'center',
+            sm: 'space-evenly',
+            md: 'space-evenly',
+          }}
+          // aligns={'center'}
           zIndex={0}
           overflowY={'hidden'}
+          // flexFlow={'wrap row'}
         >
-          <Box />
+          <Box
+            width={{ base: '0px', md: '0rem', lg: '0rem', xl: '21.875rem' }}
+          />
           <Posts totalPosts={totalQuery.data?.getTotalPosts} />
-          <Sidebar />
+          <Box visibility={{ base: 'hidden', md: 'hidden', lg: 'visible' }}>
+            <Sidebar />
+          </Box>
         </Flex>
       </>
     );

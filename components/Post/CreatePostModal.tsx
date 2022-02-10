@@ -6,6 +6,7 @@ import React, {
   useEffect,
 } from 'react';
 import {
+  chakra,
   Button,
   Flex,
   Modal,
@@ -30,6 +31,7 @@ import {
   Tooltip,
   Spinner,
   Center,
+  Text,
 } from '@chakra-ui/react';
 import { useForm, UseFormRegisterReturn } from 'react-hook-form';
 import {
@@ -59,7 +61,7 @@ function CreatePostModal({ onOpen, onClose, isOpen }: Props): ReactElement {
   const [file, setFile] = useState('');
   const [fileInfo, setFileInfo] = useState(null);
   const [postSuccess, setPostSuccess] = useState(false);
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
   const lubesQuery = useGetLubesQuery(client);
   const filmsQuery = useGetFilmsQuery(client);
@@ -190,9 +192,9 @@ function CreatePostModal({ onOpen, onClose, isOpen }: Props): ReactElement {
                       name='description'
                       id='description'
                       placeholder='description'
-                      focusBorderColor={
-                        colorMode === 'light' ? 'black' : 'white'
-                      }
+                      // focusBorderColor={
+                      //   colorMode === 'light' ? 'black' : 'white'
+                      // }
                     ></Textarea>
                     <FormErrorMessage mb={-2}>
                       {errors?.title?.message}
@@ -209,13 +211,28 @@ function CreatePostModal({ onOpen, onClose, isOpen }: Props): ReactElement {
                         colorMode === 'light' ? 'black' : 'white'
                       }
                     >
-                      <option style={{ background: 'black' }} value='clicky'>
+                      <option
+                        style={{
+                          background: colorMode === 'light' ? 'white' : 'black',
+                        }}
+                        value='clicky'
+                      >
                         clicky
                       </option>
-                      <option style={{ background: 'black' }} value='linear'>
+                      <option
+                        style={{
+                          background: colorMode === 'light' ? 'white' : 'black',
+                        }}
+                        value='linear'
+                      >
                         linear
                       </option>
-                      <option style={{ background: 'black' }} value='tactile'>
+                      <option
+                        style={{
+                          background: colorMode === 'light' ? 'white' : 'black',
+                        }}
+                        value='tactile'
+                      >
                         tactile
                       </option>
                     </Select>
@@ -234,7 +251,10 @@ function CreatePostModal({ onOpen, onClose, isOpen }: Props): ReactElement {
                       {lubesQuery?.data?.getLubes.sort().map((lube) => {
                         return (
                           <option
-                            style={{ background: 'black' }}
+                            style={{
+                              background:
+                                colorMode === 'light' ? 'white' : 'black',
+                            }}
                             key={lube?.id}
                             //@ts-ignore
                             value={lube?.name}
@@ -259,7 +279,10 @@ function CreatePostModal({ onOpen, onClose, isOpen }: Props): ReactElement {
                       {filmsQuery?.data?.getFilms.sort().map((film) => {
                         return (
                           <option
-                            style={{ background: 'black' }}
+                            style={{
+                              background:
+                                colorMode === 'light' ? 'white' : 'black',
+                            }}
                             key={film?.id}
                           >
                             {film?.name}
@@ -340,7 +363,17 @@ function CreatePostModal({ onOpen, onClose, isOpen }: Props): ReactElement {
             bg={colorMode === 'light' ? 'white' : 'black'}
             borderColor={colorMode === 'light' ? 'black' : 'white'}
           >
-            <ModalHeader>creating post {title} 🚧 </ModalHeader>
+            <ModalHeader>
+              creating post{' '}
+              <Text
+                as='span'
+                bgGradient='linear(to-l, #642B73,#C6426E)'
+                bgClip={'text'}
+              >
+                {title}
+              </Text>{' '}
+              🚧
+            </ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <Center>
@@ -364,7 +397,17 @@ function CreatePostModal({ onOpen, onClose, isOpen }: Props): ReactElement {
             bg={colorMode === 'light' ? 'white' : 'black'}
             borderColor={colorMode === 'light' ? 'black' : 'white'}
           >
-            <ModalHeader>created post {data?.createPost?.title} 🎉</ModalHeader>
+            <ModalHeader>
+              created post{' '}
+              <Text
+                as='span'
+                bgGradient='linear(to-l, #642B73,#C6426E)'
+                bgClip={'text'}
+              >
+                {data?.createPost?.title}
+              </Text>{' '}
+              🎉
+            </ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <VStack>

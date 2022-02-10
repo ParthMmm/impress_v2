@@ -20,11 +20,15 @@ const styles = {
     },
     Select: {
       color: mode('black', 'white')(props),
-      bg: mode('white', 'black')(props),
-      focusBorderColor: mode('white', 'black')(props),
 
       transitionProperty: 'background-color',
       transitionDuration: 'normal',
+    },
+    option: {
+      bg: mode('red', 'green')(props),
+    },
+    Textarea: {
+      focusBorderColor: mode('red', 'green')(props),
     },
   }),
 };
@@ -50,9 +54,12 @@ const components = {
         },
       },
     },
-    option: {
-      // styles: { background: mode('white', 'black')(props) },
+    Textarea: {
+      focusBorderColor: mode('red', 'green')(props),
     },
+    // option: {
+    //   style: { background: mode('white', 'black')(props) },
+    // },
   }),
 };
 const theme = extendTheme({ config, styles, components });

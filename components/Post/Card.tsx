@@ -26,17 +26,16 @@ interface Post {
   description?: string | null | undefined;
   file_?: string | null | undefined;
   createdAt?: any | null | undefined;
-  tags?:
-    | Array<
-        | {
-            __typename?: 'Tag';
-            type?: string | null | undefined;
-            lube?: string | null | undefined;
-            film?: string | null | undefined;
-          }
-        | null
-        | undefined
-      >
+  film?:
+    | { __typename?: 'Tag'; name?: string | null | undefined }
+    | null
+    | undefined;
+  lube?:
+    | { __typename?: 'Tag'; name?: string | null | undefined }
+    | null
+    | undefined;
+  type?:
+    | { __typename?: 'Tag'; name?: string | null | undefined }
     | null
     | undefined;
   author?:
@@ -56,19 +55,23 @@ function Card({ post }: Props): ReactElement {
   const toast = useToast();
   const { asPath } = useRouter();
 
-  const tags = post?.tags?.map((a) => {
-    return { film: a?.film, lube: a?.lube, type: a?.type };
-  });
+  // const tags = post?.tags?.map((a) => {
+  //   return { film: a?.film, lube: a?.lube, type: a?.type };
+  // });
 
   useEffect(() => {
     setPath(`${process.env.NEXT_PUBLIC_FRONTEND_SERVER}` + `post/${post?.id}`);
   }, [post?.id]);
 
+  let tags: string[] = [];
+  if (post?.film?.name && post?.type?.name && post?.lube?.name)
+    tags = [post?.type?.name, post?.lube.name, post?.film.name];
+
   const tagComponent = tags ? (
     <HStack spacing={4} color='gray.400'>
-      <Tag>{tags[0].type}</Tag>
-      <Tag>{tags[0].lube}</Tag>
-      <Tag>{tags[0].film}</Tag>
+      <Tag>{tags[0]}</Tag>
+      <Tag>{tags[1]}</Tag>
+      <Tag>{tags[2]}</Tag>
     </HStack>
   ) : null;
 

@@ -33,78 +33,52 @@ function Header({}: Props): ReactElement {
   const currentUser: currentUser | undefined =
     queryClient.getQueryData('CurrentUser');
 
-  if (currentUser?.currentUser?.id) {
-    return (
-      <Flex
-        w={'full'}
-        pos={'fixed'}
-        bg={colorMode === 'light' ? 'white' : 'black'}
-        top={0}
-        zIndex={2}
-        // overflow={'hidden'}
-      >
-        <Flex
-          alignItems='center'
-          justifyContent='space-between'
-          mx={'12rem'}
-          w='full'
-          h='12vh'
-          borderBottom='5px solid '
-        >
-          <Title fontSize={48} />
+  const AuthComponent = currentUser?.currentUser?.id ? (
+    <Menu variant={'outline'}>
+      <MenuButton
+        as={IconButton}
+        icon={<RiUser4Fill />}
+        bg='0'
+        _focus={{ border: '2px solid white' }}
+        _hover={{ bg: 'none', color: 'gray.200' }}
+        _active={{ border: '2px solid white', bg: 'none' }}
+        size='lg'
+      />
+      <MenuList bg={colorMode === 'light' ? 'white' : 'black'}>
+        <MenuItem icon={<RiUser4Fill />}>profile</MenuItem>
+        <MenuItem icon={<RiSettings4Line />}>settings</MenuItem>
+        <MenuItem icon={<RiLogoutBoxLine />} onClick={() => mutate({})}>
+          log out
+        </MenuItem>
+      </MenuList>
+    </Menu>
+  ) : (
+    <ButtonGroup>
+      <Button onClick={() => router.push('/login')}>log in</Button>
+      <Button onClick={() => router.push('/register')}>get started</Button>
+    </ButtonGroup>
+  );
 
-          <Menu variant={'outline'}>
-            <MenuButton
-              as={IconButton}
-              icon={<RiUser4Fill />}
-              // color='purple.600'
-              bg='0'
-              _focus={{ border: '2px solid white' }}
-              _hover={{ bg: 'none', color: 'gray.200' }}
-              _active={{ border: '2px solid white', bg: 'none' }}
-              // as={RiUser4Fill}
-              // color='white'
-              size='lg'
-            />
-            <MenuList bg={colorMode === 'light' ? 'white' : 'black'} h='0'>
-              <MenuItem icon={<RiUser4Fill />}>profile</MenuItem>
-              <MenuItem icon={<RiSettings4Line />}>settings</MenuItem>
-              <MenuItem icon={<RiLogoutBoxLine />} onClick={() => mutate({})}>
-                log out
-              </MenuItem>
-            </MenuList>
-          </Menu>
-        </Flex>
-      </Flex>
-    );
-  } else {
-    return (
+  return (
+    <Flex
+      w={'full'}
+      pos={'sticky'}
+      bg={colorMode === 'light' ? 'white' : 'black'}
+      top={0}
+      zIndex={2}
+    >
       <Flex
-        w={'full'}
-        pos={'sticky'}
-        bg={colorMode === 'light' ? 'white' : 'black'}
-        top={0}
-        zIndex={2}
+        alignItems='center'
+        justifyContent='space-between'
+        mx={{ base: '1rem', md: '4rem', lg: '6rem', xl: '12rem' }}
+        w='full'
+        h='12vh'
+        borderBottom='5px solid '
       >
-        <Flex
-          alignItems='center'
-          justifyContent='space-between'
-          mx={'12rem'}
-          w='full'
-          h='12vh'
-          borderBottom='5px solid '
-        >
-          <Title fontSize={48} />
-          <ButtonGroup>
-            <Button onClick={() => router.push('/login')}>log in</Button>
-            <Button onClick={() => router.push('/register')}>
-              get started
-            </Button>
-          </ButtonGroup>
-        </Flex>
+        <Title fontSize={48} />
+        {AuthComponent}
       </Flex>
-    );
-  }
+    </Flex>
+  );
 }
-
 export default Header;

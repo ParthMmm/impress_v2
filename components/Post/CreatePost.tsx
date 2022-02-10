@@ -28,6 +28,7 @@ import {
   Image,
   Box,
   Tooltip,
+  Text,
 } from '@chakra-ui/react';
 import { useForm, UseFormRegisterReturn } from 'react-hook-form';
 import {
@@ -184,7 +185,7 @@ function CreatePost({}: Props): ReactElement {
           _hover={{ border: '2px solid ' }}
           rounded={'0'}
         >
-          create post
+          <Text fontSize={{ base: '0', md: 'md' }}> create post</Text>
         </Button>
 
         <CreatePostModal onOpen={onOpen} isOpen={isOpen} onClose={onClose} />

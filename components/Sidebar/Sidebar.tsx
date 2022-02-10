@@ -15,13 +15,24 @@ function Sidebar({}: Props): ReactElement {
     queryClient.getQueryData('CurrentUser');
 
   return (
-    <Flex h='20%' zIndex={0} mt='48'>
-      <Flex width={'350px'} position={'fixed'}>
+    <Flex
+      h='20%'
+      zIndex={0}
+      mt='1rem'
+      width={{
+        base: '0px',
+        sm: '0px',
+        md: '0rem',
+        lg: '15rem',
+        xl: '21.875rem',
+      }}
+    >
+      <Flex position={'fixed'}>
         <Flex
-          border='2px solid'
-          mt='2'
-          h='20rem'
-          w='24rem'
+          border='4px solid'
+          mt='3rem'
+          h={{ base: '0', md: '0rem', lg: '20rem' }}
+          w={{ base: '0', md: '0rem', lg: '20rem' }}
           justifyContent={'flex-start'}
           flexDir={'column'}
         >

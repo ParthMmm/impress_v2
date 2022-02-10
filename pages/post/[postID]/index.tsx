@@ -1,7 +1,7 @@
 import React from 'react';
 import { Flex, Box, Grid, GridItem, Spacer } from '@chakra-ui/react';
 import Sidebar from '@/components/Sidebar/Sidebar';
-import PostController from '@/components/Post/PostController';
+import PostPage from '@/components/Post/PostPage';
 import Header from '@/components/Header';
 import PostLanding from './PostLanding';
 

@@ -27,10 +27,12 @@ export type DataPost = {
   description?: Maybe<Scalars['String']>;
   dislikes?: Maybe<Scalars['Int']>;
   file_?: Maybe<Scalars['String']>;
+  film?: Maybe<Tag>;
   id?: Maybe<Scalars['String']>;
   likes?: Maybe<Scalars['Int']>;
-  tags?: Maybe<Array<Maybe<Tag>>>;
+  lube?: Maybe<Tag>;
   title?: Maybe<Scalars['String']>;
+  type?: Maybe<Tag>;
 };
 
 export type Film = {
@@ -104,6 +106,8 @@ export type PostInput = {
 export type Query = {
   __typename?: 'Query';
   currentUser: User;
+  getByFilm?: Maybe<Array<Maybe<DataPost>>>;
+  getByLube?: Maybe<Array<Maybe<DataPost>>>;
   getByType?: Maybe<Array<Maybe<DataPost>>>;
   getFilms?: Maybe<Array<Maybe<Film>>>;
   getLubes?: Maybe<Array<Maybe<Lube>>>;
@@ -112,6 +116,16 @@ export type Query = {
   getTotalPosts?: Maybe<Scalars['Int']>;
   test?: Maybe<Scalars['String']>;
   tester?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryGetByFilmArgs = {
+  film?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryGetByLubeArgs = {
+  lube?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -131,10 +145,8 @@ export type QueryGetSinglePostArgs = {
 
 export type Tag = {
   __typename?: 'Tag';
-  film?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['String']>;
-  lube?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
 };
 
 export type User = {
@@ -204,19 +216,40 @@ export type GetPostsQueryVariables = Exact<{
 }>;
 
 
-export type GetPostsQuery = { __typename?: 'Query', getPosts?: Array<{ __typename?: 'DataPost', id?: string | null | undefined, title?: string | null | undefined, description?: string | null | undefined, file_?: string | null | undefined, createdAt?: any | null | undefined, tags?: Array<{ __typename?: 'Tag', type?: string | null | undefined, lube?: string | null | undefined, film?: string | null | undefined } | null | undefined> | null | undefined, author?: { __typename?: 'User', username?: string | null | undefined, id?: string | null | undefined } | null | undefined } | null | undefined> | null | undefined };
+export type GetPostsQuery = { __typename?: 'Query', getPosts?: Array<{ __typename?: 'DataPost', id?: string | null | undefined, title?: string | null | undefined, description?: string | null | undefined, file_?: string | null | undefined, createdAt?: any | null | undefined, film?: { __typename?: 'Tag', name?: string | null | undefined } | null | undefined, lube?: { __typename?: 'Tag', name?: string | null | undefined } | null | undefined, type?: { __typename?: 'Tag', name?: string | null | undefined } | null | undefined, author?: { __typename?: 'User', username?: string | null | undefined, id?: string | null | undefined } | null | undefined } | null | undefined> | null | undefined };
 
 export type GetSinglePostQueryVariables = Exact<{
   getSinglePostId?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type GetSinglePostQuery = { __typename?: 'Query', getSinglePost?: { __typename?: 'DataPost', id?: string | null | undefined, title?: string | null | undefined, description?: string | null | undefined, file_?: string | null | undefined, createdAt?: any | null | undefined, tags?: Array<{ __typename?: 'Tag', type?: string | null | undefined, lube?: string | null | undefined, film?: string | null | undefined } | null | undefined> | null | undefined, author?: { __typename?: 'User', username?: string | null | undefined, id?: string | null | undefined } | null | undefined } | null | undefined };
+export type GetSinglePostQuery = { __typename?: 'Query', getSinglePost?: { __typename?: 'DataPost', id?: string | null | undefined, title?: string | null | undefined, description?: string | null | undefined, file_?: string | null | undefined, createdAt?: any | null | undefined, film?: { __typename?: 'Tag', name?: string | null | undefined } | null | undefined, lube?: { __typename?: 'Tag', name?: string | null | undefined } | null | undefined, type?: { __typename?: 'Tag', name?: string | null | undefined } | null | undefined, author?: { __typename?: 'User', username?: string | null | undefined, id?: string | null | undefined } | null | undefined } | null | undefined };
 
 export type GetTotalPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetTotalPostsQuery = { __typename?: 'Query', getTotalPosts?: number | null | undefined };
+
+export type GetByTypeQueryVariables = Exact<{
+  type?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetByTypeQuery = { __typename?: 'Query', getByType?: Array<{ __typename?: 'DataPost', id?: string | null | undefined, title?: string | null | undefined, description?: string | null | undefined, createdAt?: any | null | undefined, file_?: string | null | undefined, likes?: number | null | undefined, dislikes?: number | null | undefined, author?: { __typename?: 'User', id?: string | null | undefined, username?: string | null | undefined } | null | undefined, lube?: { __typename?: 'Tag', name?: string | null | undefined } | null | undefined, film?: { __typename?: 'Tag', name?: string | null | undefined } | null | undefined, type?: { __typename?: 'Tag', name?: string | null | undefined } | null | undefined } | null | undefined> | null | undefined };
+
+export type GetByFilmQueryVariables = Exact<{
+  film?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetByFilmQuery = { __typename?: 'Query', getByFilm?: Array<{ __typename?: 'DataPost', id?: string | null | undefined, title?: string | null | undefined, description?: string | null | undefined, createdAt?: any | null | undefined, file_?: string | null | undefined, likes?: number | null | undefined, dislikes?: number | null | undefined, author?: { __typename?: 'User', id?: string | null | undefined, username?: string | null | undefined } | null | undefined, lube?: { __typename?: 'Tag', name?: string | null | undefined } | null | undefined, film?: { __typename?: 'Tag', name?: string | null | undefined } | null | undefined, type?: { __typename?: 'Tag', name?: string | null | undefined } | null | undefined } | null | undefined> | null | undefined };
+
+export type GetByLubeQueryVariables = Exact<{
+  lube?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetByLubeQuery = { __typename?: 'Query', getByLube?: Array<{ __typename?: 'DataPost', id?: string | null | undefined, title?: string | null | undefined, description?: string | null | undefined, createdAt?: any | null | undefined, file_?: string | null | undefined, likes?: number | null | undefined, dislikes?: number | null | undefined, author?: { __typename?: 'User', id?: string | null | undefined, username?: string | null | undefined } | null | undefined, lube?: { __typename?: 'Tag', name?: string | null | undefined } | null | undefined, film?: { __typename?: 'Tag', name?: string | null | undefined } | null | undefined, type?: { __typename?: 'Tag', name?: string | null | undefined } | null | undefined } | null | undefined> | null | undefined };
 
 
 export const GetFilmsDocument = `
@@ -424,10 +457,14 @@ export const GetPostsDocument = `
     title
     description
     file_
-    tags {
-      type
-      lube
-      film
+    film {
+      name
+    }
+    lube {
+      name
+    }
+    type {
+      name
     }
     createdAt
     author {
@@ -474,10 +511,14 @@ export const GetSinglePostDocument = `
     title
     description
     file_
-    tags {
-      type
-      lube
-      film
+    film {
+      name
+    }
+    lube {
+      name
+    }
+    type {
+      name
     }
     createdAt
     author {
@@ -549,5 +590,173 @@ export const useInfiniteGetTotalPostsQuery = <
     useInfiniteQuery<GetTotalPostsQuery, TError, TData>(
       variables === undefined ? ['getTotalPosts.infinite'] : ['getTotalPosts.infinite', variables],
       (metaData) => fetcher<GetTotalPostsQuery, GetTotalPostsQueryVariables>(client, GetTotalPostsDocument, {...variables, ...(metaData.pageParam ?? {})}, headers)(),
+      options
+    );
+
+export const GetByTypeDocument = `
+    query GetByType($type: String) {
+  getByType(type: $type) {
+    id
+    title
+    description
+    author {
+      id
+      username
+    }
+    createdAt
+    file_
+    likes
+    dislikes
+    lube {
+      name
+    }
+    film {
+      name
+    }
+    type {
+      name
+    }
+  }
+}
+    `;
+export const useGetByTypeQuery = <
+      TData = GetByTypeQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables?: GetByTypeQueryVariables,
+      options?: UseQueryOptions<GetByTypeQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<GetByTypeQuery, TError, TData>(
+      variables === undefined ? ['GetByType'] : ['GetByType', variables],
+      fetcher<GetByTypeQuery, GetByTypeQueryVariables>(client, GetByTypeDocument, variables, headers),
+      options
+    );
+export const useInfiniteGetByTypeQuery = <
+      TData = GetByTypeQuery,
+      TError = unknown
+    >(
+      pageParamKey: keyof GetByTypeQueryVariables,
+      client: GraphQLClient,
+      variables?: GetByTypeQueryVariables,
+      options?: UseInfiniteQueryOptions<GetByTypeQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useInfiniteQuery<GetByTypeQuery, TError, TData>(
+      variables === undefined ? ['GetByType.infinite'] : ['GetByType.infinite', variables],
+      (metaData) => fetcher<GetByTypeQuery, GetByTypeQueryVariables>(client, GetByTypeDocument, {...variables, ...(metaData.pageParam ?? {})}, headers)(),
+      options
+    );
+
+export const GetByFilmDocument = `
+    query getByFilm($film: String) {
+  getByFilm(film: $film) {
+    id
+    title
+    description
+    author {
+      id
+      username
+    }
+    createdAt
+    file_
+    likes
+    dislikes
+    lube {
+      name
+    }
+    film {
+      name
+    }
+    type {
+      name
+    }
+  }
+}
+    `;
+export const useGetByFilmQuery = <
+      TData = GetByFilmQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables?: GetByFilmQueryVariables,
+      options?: UseQueryOptions<GetByFilmQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<GetByFilmQuery, TError, TData>(
+      variables === undefined ? ['getByFilm'] : ['getByFilm', variables],
+      fetcher<GetByFilmQuery, GetByFilmQueryVariables>(client, GetByFilmDocument, variables, headers),
+      options
+    );
+export const useInfiniteGetByFilmQuery = <
+      TData = GetByFilmQuery,
+      TError = unknown
+    >(
+      pageParamKey: keyof GetByFilmQueryVariables,
+      client: GraphQLClient,
+      variables?: GetByFilmQueryVariables,
+      options?: UseInfiniteQueryOptions<GetByFilmQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useInfiniteQuery<GetByFilmQuery, TError, TData>(
+      variables === undefined ? ['getByFilm.infinite'] : ['getByFilm.infinite', variables],
+      (metaData) => fetcher<GetByFilmQuery, GetByFilmQueryVariables>(client, GetByFilmDocument, {...variables, ...(metaData.pageParam ?? {})}, headers)(),
+      options
+    );
+
+export const GetByLubeDocument = `
+    query getByLube($lube: String) {
+  getByLube(lube: $lube) {
+    id
+    title
+    description
+    author {
+      id
+      username
+    }
+    createdAt
+    file_
+    likes
+    dislikes
+    lube {
+      name
+    }
+    film {
+      name
+    }
+    type {
+      name
+    }
+  }
+}
+    `;
+export const useGetByLubeQuery = <
+      TData = GetByLubeQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables?: GetByLubeQueryVariables,
+      options?: UseQueryOptions<GetByLubeQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<GetByLubeQuery, TError, TData>(
+      variables === undefined ? ['getByLube'] : ['getByLube', variables],
+      fetcher<GetByLubeQuery, GetByLubeQueryVariables>(client, GetByLubeDocument, variables, headers),
+      options
+    );
+export const useInfiniteGetByLubeQuery = <
+      TData = GetByLubeQuery,
+      TError = unknown
+    >(
+      pageParamKey: keyof GetByLubeQueryVariables,
+      client: GraphQLClient,
+      variables?: GetByLubeQueryVariables,
+      options?: UseInfiniteQueryOptions<GetByLubeQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useInfiniteQuery<GetByLubeQuery, TError, TData>(
+      variables === undefined ? ['getByLube.infinite'] : ['getByLube.infinite', variables],
+      (metaData) => fetcher<GetByLubeQuery, GetByLubeQueryVariables>(client, GetByLubeDocument, {...variables, ...(metaData.pageParam ?? {})}, headers)(),
       options
     );
