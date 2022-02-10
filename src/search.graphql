@@ -1,0 +1,74 @@
+query GetByType($type: String) {
+  getByType(type: $type) {
+    id
+    title
+    description
+    author {
+      id
+      username
+    }
+    createdAt
+    file_
+    likes
+    dislikes
+    lube {
+      name
+    }
+    film {
+      name
+    }
+    type {
+      name
+    }
+  }
+}
+
+query getByFilm($film: String) {
+  getByFilm(film: $film) {
+    id
+    title
+    description
+    author {
+      id
+      username
+    }
+    createdAt
+    file_
+    likes
+    dislikes
+    lube {
+      name
+    }
+    film {
+      name
+    }
+    type {
+      name
+    }
+  }
+}
+
+query getByLube($lube: String) {
+  getByLube(lube: $lube) {
+    id
+    title
+    description
+    author {
+      id
+      username
+    }
+    createdAt
+    file_
+    likes
+    dislikes
+    lube {
+      name
+    }
+    film {
+      name
+    }
+    type {
+      name
+    }
+  }
+}
