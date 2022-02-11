@@ -14,6 +14,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import Film from '../Search/Film';
 interface Props {
   post: Post | undefined | null;
   // post: Post;
@@ -69,9 +70,9 @@ function Card({ post }: Props): ReactElement {
 
   const tagComponent = tags ? (
     <HStack spacing={4} color='gray.400'>
-      <Tag>{tags[0]}</Tag>
       <Tag>{tags[1]}</Tag>
       <Tag>{tags[2]}</Tag>
+      <Film name={tags[2]} />
     </HStack>
   ) : null;
 
