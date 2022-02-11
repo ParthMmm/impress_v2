@@ -1,7 +1,7 @@
 import React from 'react';
 import PostPage from '@/components/Post/PostPage';
 import Sidebar from '@/components/Sidebar/Sidebar';
-import { Flex, Box, Grid, GridItem, Spacer } from '@chakra-ui/react';
+import { Flex, Box, Grid, GridItem, Spacer, Spinner } from '@chakra-ui/react';
 import SearchPage from '@/components/Search/SearchPage';
 import { useRouter } from 'next/router';
 import { useGetByFilmQuery } from '@/generates';
@@ -11,15 +11,23 @@ type Props = {};
 function SearchLanding({}: Props) {
   const router = useRouter();
   const filter: string | undefined = router.query.filter?.toString();
-  const { data } = useGetByFilmQuery(client, {
+  const { data, isLoading } = useGetByFilmQuery(client, {
     film: filter,
     //@ts-ignore
     enabled: !!filter,
   });
 
-  console.log(filter);
+  console.log(filter, data, { isLoading });
 
-  return (
+  const loadingComponent = (
+    <Box border='4px solid' mt={4} mb={4}>
+      <Flex justifyContent={'space-between'} flexDirection={'row'}>
+        <Spinner />
+      </Flex>
+    </Box>
+  );
+
+  const dataComponent = (
     <>
       <Flex
         h={'100%'}
@@ -35,7 +43,7 @@ function SearchLanding({}: Props) {
         overflowY={'hidden'}
       >
         <Box width={{ base: '0px', md: '0rem', lg: '0rem', xl: '21.875rem' }} />
-        <SearchPage name={filter} data={data} />
+        <SearchPage name={filter} data={data} isLoading={isLoading} />
 
         <Box visibility={{ base: 'hidden', md: 'hidden', lg: 'visible' }}>
           <Sidebar />
@@ -43,6 +51,10 @@ function SearchLanding({}: Props) {
       </Flex>
     </>
   );
+
+  const mainComponent = data ? dataComponent : loadingComponent;
+
+  return <>{mainComponent}</>;
 }
 
 export default SearchLanding;
