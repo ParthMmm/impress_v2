@@ -27,6 +27,7 @@ function Search({}: Props) {
         <Input
           type='search'
           placeholder='search'
+          _placeholder={{ opacity: 0.5, color: 'purple.500' }}
           focusBorderColor={colorMode === 'light' ? 'black' : 'white'}
           borderColor={colorMode === 'light' ? 'white' : 'black'}
           border={'2px solid'}

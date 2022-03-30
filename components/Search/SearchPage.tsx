@@ -34,7 +34,7 @@ function SearchPage({ name, data }: Props) {
       </Box>
     );
   } else {
-    return <>hi</>;
+    return null;
   }
 }
 

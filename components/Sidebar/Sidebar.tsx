@@ -51,8 +51,8 @@ function Sidebar({}: Props): ReactElement {
           </Flex>
           <Search />
           <SearchTags />
-          <Tag>yo</Tag>
-          <Button />
+          {/* <Tag>yo</Tag>
+          <Button /> */}
         </Flex>
       </Flex>
     </Flex>
