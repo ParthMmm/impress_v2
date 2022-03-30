@@ -6,19 +6,36 @@ import SearchPage from '@/components/Search/SearchPage';
 import { useRouter } from 'next/router';
 import { useGetByFilmQuery } from '@/generates';
 import client from '@/app/request-client';
+import { useQueryClient } from 'react-query';
+import { Post } from '@/interfaces';
+
 type Props = {};
+type queryObject = {
+  [k: string]: [string, object];
+};
 
 function SearchLanding({}: Props) {
   const router = useRouter();
+  const queryClient = useQueryClient();
+  let queryKey: [string, object] = ['', {}];
+
   const filter: string | undefined = router.query.filter?.toString();
-  const { data, isLoading } = useGetByFilmQuery(client, {
-    film: filter,
-    //@ts-ignore
-    enabled: !!filter,
-  });
+  const query: string | undefined = router.query.query?.toString();
 
-  console.log(filter, data, { isLoading });
+  console.log({ filter }, { query });
 
+  const queryObject: queryObject = {
+    type: ['getByType', { type: filter }],
+    film: ['getByFilm', { film: filter }],
+    lube: ['getByLube', { lube: filter }],
+  };
+
+  if (query) {
+    queryKey = queryObject[query];
+  }
+
+  let data: any = queryClient.getQueryData(queryKey);
+  data = data[queryKey[0]];
   const loadingComponent = (
     <Box border='4px solid' mt={4} mb={4}>
       <Flex justifyContent={'space-between'} flexDirection={'row'}>
@@ -41,9 +58,10 @@ function SearchLanding({}: Props) {
         }}
         zIndex={0}
         overflowY={'hidden'}
+        mt='32'
       >
         <Box width={{ base: '0px', md: '0rem', lg: '0rem', xl: '21.875rem' }} />
-        <SearchPage name={filter} data={data} isLoading={isLoading} />
+        <SearchPage name={filter} data={data} />
 
         <Box visibility={{ base: 'hidden', md: 'hidden', lg: 'visible' }}>
           <Sidebar />

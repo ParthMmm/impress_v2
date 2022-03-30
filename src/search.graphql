@@ -1,4 +1,4 @@
-query GetByType($type: String) {
+query getByType($type: String) {
   getByType(type: $type) {
     id
     title

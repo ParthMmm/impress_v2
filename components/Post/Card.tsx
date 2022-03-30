@@ -15,6 +15,8 @@ import { useRouter } from 'next/router';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Film from '../Search/Film';
+import Type from '../Search/Type';
+import Lube from '../Search/Lube';
 interface Props {
   post: Post | undefined | null;
   // post: Post;
@@ -70,8 +72,8 @@ function Card({ post }: Props): ReactElement {
 
   const tagComponent = tags ? (
     <HStack spacing={4} color='gray.400'>
-      <Tag>{tags[1]}</Tag>
-      <Tag>{tags[2]}</Tag>
+      <Type name={tags[0]} />
+      <Lube name={tags[1]} />
       <Film name={tags[2]} />
     </HStack>
   ) : null;

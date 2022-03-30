@@ -4,6 +4,7 @@ import Sidebar from '@/components/Sidebar/Sidebar';
 import PostPage from '@/components/Post/PostPage';
 import Header from '@/components/Header';
 import SearchLanding from './SearchLanding';
+
 type Props = {};
 
 function index({}: Props) {
