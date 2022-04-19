@@ -57,11 +57,53 @@ const components = {
     Textarea: {
       focusBorderColor: mode('red', 'green')(props),
     },
+    Tag: {
+      baseStyle: {
+        bg: 'red',
+      },
+    },
     // option: {
     //   style: { background: mode('white', 'black')(props) },
     // },
   }),
 };
-const theme = extendTheme({ config, styles, components });
 
+const Tag = {
+  baseStyle: {
+    background: 'red',
+    color: 'red',
+  },
+  variants: {
+    base: {
+      bg: 'purple.200',
+      color: 'red.200',
+    },
+  },
+  defaultProps: {
+    variant: 'base',
+  },
+};
+
+const Button = {
+  baseStyle: {
+    background: 'red',
+  },
+  variants: {
+    base: {
+      bg: 'purple.500',
+    },
+  },
+  defaultProps: {
+    variant: 'base',
+  },
+};
+
+const theme = extendTheme({
+  config,
+  styles,
+  components: {
+    Tag,
+    Button,
+  },
+});
 export default theme;

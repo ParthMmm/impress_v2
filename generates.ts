@@ -594,7 +594,7 @@ export const useInfiniteGetTotalPostsQuery = <
     );
 
 export const GetByTypeDocument = `
-    query GetByType($type: String) {
+    query getByType($type: String) {
   getByType(type: $type) {
     id
     title
@@ -629,7 +629,7 @@ export const useGetByTypeQuery = <
       headers?: RequestInit['headers']
     ) =>
     useQuery<GetByTypeQuery, TError, TData>(
-      variables === undefined ? ['GetByType'] : ['GetByType', variables],
+      variables === undefined ? ['getByType'] : ['getByType', variables],
       fetcher<GetByTypeQuery, GetByTypeQueryVariables>(client, GetByTypeDocument, variables, headers),
       options
     );
@@ -644,7 +644,7 @@ export const useInfiniteGetByTypeQuery = <
       headers?: RequestInit['headers']
     ) =>
     useInfiniteQuery<GetByTypeQuery, TError, TData>(
-      variables === undefined ? ['GetByType.infinite'] : ['GetByType.infinite', variables],
+      variables === undefined ? ['getByType.infinite'] : ['getByType.infinite', variables],
       (metaData) => fetcher<GetByTypeQuery, GetByTypeQueryVariables>(client, GetByTypeDocument, {...variables, ...(metaData.pageParam ?? {})}, headers)(),
       options
     );

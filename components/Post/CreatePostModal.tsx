@@ -158,7 +158,12 @@ function CreatePostModal({ onOpen, onClose, isOpen }: Props): ReactElement {
   ) {
     return (
       <Flex>
-        <Modal onClose={onClose} isOpen={isOpen} isCentered>
+        <Modal
+          onClose={onClose}
+          isOpen={isOpen}
+          isCentered
+          data-testid='post_modal'
+        >
           <ModalOverlay />
           <ModalContent
             border={'2px solid'}

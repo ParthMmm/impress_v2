@@ -144,7 +144,6 @@ function Posts({ totalPosts }: Props): ReactElement {
       flexDir={'column'}
       overflowY={'scroll'}
       zIndex={1}
-      mt='3rem'
       // p='5rem'
     >
       <Spinner />
@@ -159,7 +158,7 @@ function Posts({ totalPosts }: Props): ReactElement {
         flexDir={'column'}
         overflowY={'scroll'}
         zIndex={1}
-        mt='3rem'
+
         // p='5rem'
         // mr='-10rem'
       >
@@ -184,7 +183,6 @@ function Posts({ totalPosts }: Props): ReactElement {
         flexDir={'column'}
         overflowY={'scroll'}
         zIndex={1}
-        mt='3rem'
         // p='5rem'
       >
         <Spinner />

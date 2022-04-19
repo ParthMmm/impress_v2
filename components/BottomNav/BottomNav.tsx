@@ -28,15 +28,15 @@ function BottomNav({}: Props) {
   return (
     <Flex
       w='full'
-      pos='sticky'
+      pos='fixed'
       bottom={0}
       zIndex={2}
       h='5rem'
       bg={colorMode === 'light' ? 'white' : 'black'}
       justifyContent={'space-evenly'}
       align={'center'}
+      border='2px solid white'
     >
-      {/* <Box> */}
       {currentUser?.currentUser?.id ? <CreatePostNav /> : <></>}
 
       <SearchNav />

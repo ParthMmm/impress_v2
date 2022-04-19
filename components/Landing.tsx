@@ -22,10 +22,9 @@ function Landing({}: Props): ReactElement {
             sm: 'space-evenly',
             md: 'space-evenly',
           }}
-          // aligns={'center'}
           zIndex={0}
           overflowY={'hidden'}
-          // flexFlow={'wrap row'}
+          mt='32'
         >
           <Box
             width={{ base: '0px', md: '0rem', lg: '0rem', xl: '21.875rem' }}

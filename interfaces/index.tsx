@@ -60,3 +60,32 @@ export interface currentUser {
   currentUser: User;
   a: number;
 }
+
+export interface Post {
+  __typename?: 'DataPost';
+  id?: string | null | undefined;
+  title?: string | null | undefined;
+  description?: string | null | undefined;
+  file_?: string | null | undefined;
+  createdAt?: any | null | undefined;
+  film?:
+    | { __typename?: 'Tag'; name?: string | null | undefined }
+    | null
+    | undefined;
+  lube?:
+    | { __typename?: 'Tag'; name?: string | null | undefined }
+    | null
+    | undefined;
+  type?:
+    | { __typename?: 'Tag'; name?: string | null | undefined }
+    | null
+    | undefined;
+  author?:
+    | {
+        __typename?: 'User';
+        username?: string | null | undefined;
+        id?: string | null | undefined;
+      }
+    | null
+    | undefined;
+}
