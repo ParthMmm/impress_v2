@@ -56,7 +56,7 @@ function SearchTags({}: Props) {
       >
         <Lube name={'Krytox'} />
         <Lube name={'G-Lube'} />
-        <Lube name={'Dialetric'} />
+        <Lube name={'Dieletric Grease'} />
       </HStack>
     </Box>
   );

@@ -4,10 +4,10 @@ import Sidebar from '@/components/Sidebar/Sidebar';
 import { Flex, Box, Grid, GridItem, Spacer, Spinner } from '@chakra-ui/react';
 import SearchPage from '@/components/Search/SearchPage';
 import { useRouter } from 'next/router';
-import { useGetByFilmQuery } from '@/generates';
+import { useGetByFilmQuery } from 'generates';
 import client from '@/app/request-client';
 import { useQueryClient } from 'react-query';
-import { Post } from '@/interfaces';
+import { Post } from 'interfaces';
 
 type Props = {};
 type queryObject = {
@@ -35,7 +35,9 @@ function SearchLanding({}: Props) {
   }
 
   let data: any = queryClient.getQueryData(queryKey);
-  data = data[queryKey[0]];
+  if (data) {
+    data = data[queryKey[0]];
+  }
   const loadingComponent = (
     <Box border='4px solid' mt={4} mb={4}>
       <Flex justifyContent={'space-between'} flexDirection={'row'}>

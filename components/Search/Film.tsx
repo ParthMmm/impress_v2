@@ -8,7 +8,7 @@ import {
   Tooltip,
   useColorMode,
 } from '@chakra-ui/react';
-import { useGetByFilmQuery } from '@/generates';
+// import { useGetByFilmQuery } from '@/generates';
 import client from '@/app/request-client';
 import { useRouter } from 'next/router';
 
@@ -20,7 +20,7 @@ function Film({ name }: Props) {
   const router = useRouter();
   const { colorMode } = useColorMode();
 
-  const { data } = useGetByFilmQuery(client, { film: 'Deskeys' });
+  // const { data } = useGetByFilmQuery(client, { film: 'Deskeys' });
 
   const search = () => {
     router.push({

@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from '@chakra-ui/react';
 import client from '@/app/request-client';
-import { useGetByLubeQuery, useGetByTypeQuery } from '@/generates';
+import { useGetByLubeQuery, useGetByTypeQuery } from 'generates';
 import { useRouter } from 'next/router';
 
 type Props = {

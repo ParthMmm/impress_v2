@@ -1,8 +1,8 @@
-import { GetByFilmQuery } from '@/generates';
+import { GetByFilmQuery } from 'generates';
 import { Heading, Text, Box, Flex, Spinner } from '@chakra-ui/react';
 import React from 'react';
 import Card from '../Post/Card';
-import { Post } from '@/interfaces';
+import { Post } from 'interfaces';
 
 type Props = {
   name: string | undefined;

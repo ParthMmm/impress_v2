@@ -16,11 +16,19 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["*"],
-      "@/components/*": ["./components/*"],
-      "@/app/*": ["./app/*"]
+      "@/components/*": ["components/*"],
+      "@/app/*": ["app/*"],
+      "@/": ["."],
+      "@/interfaces/*": ["interfaces/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "__tests__/CreatePost.test.js",
+    "__tests__/LogIn.test.js",
+    "__tests__/Search.test.js"
+  ],
   "exclude": ["node_modules"]
 }

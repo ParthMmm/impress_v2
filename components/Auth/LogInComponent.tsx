@@ -92,7 +92,7 @@ function LogIn({}: Props): ReactElement {
   } else {
     return (
       <>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} title='login'>
           <Flex
             justifyContent={'center'}
             align={'center'}
@@ -106,6 +106,7 @@ function LogIn({}: Props): ReactElement {
                 <VStack spacing={6} mt={12} mx={4}>
                   <FormControl isInvalid={errors?.username}>
                     <Input
+                      label='username'
                       id='username'
                       type='username'
                       placeholder='username'
@@ -119,6 +120,7 @@ function LogIn({}: Props): ReactElement {
                   <FormControl isInvalid={errors?.password}>
                     <Input
                       id='password'
+                      label='password'
                       type='password'
                       placeholder='password'
                       focusBorderColor={'white'}

@@ -40,7 +40,7 @@ function Sidebar({}: Props): ReactElement {
         <Flex
           border='4px solid'
           mt='3rem'
-          h={{ base: '0', md: '0rem', lg: '20rem' }}
+          h={{ base: '0', md: '0rem', lg: '24rem' }}
           w={{ base: '0', md: '0rem', lg: '20rem' }}
           justifyContent={'flex-start'}
           flexDir={'column'}
@@ -51,8 +51,6 @@ function Sidebar({}: Props): ReactElement {
           </Flex>
           <Search />
           <SearchTags />
-          {/* <Tag>yo</Tag>
-          <Button /> */}
         </Flex>
       </Flex>
     </Flex>
