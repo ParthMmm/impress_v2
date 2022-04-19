@@ -22,7 +22,7 @@ function SearchLanding({}: Props) {
   const filter: string | undefined = router.query.filter?.toString();
   const query: string | undefined = router.query.query?.toString();
 
-  console.log({ filter }, { query });
+  // console.log({ filter }, { query });
 
   const queryObject: queryObject = {
     type: ['getByType', { type: filter }],
@@ -33,7 +33,6 @@ function SearchLanding({}: Props) {
   if (query) {
     queryKey = queryObject[query];
   }
-
   let data: any = queryClient.getQueryData(queryKey);
   if (data) {
     data = data[queryKey[0]];

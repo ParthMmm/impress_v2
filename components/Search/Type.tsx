@@ -20,7 +20,6 @@ function Type({ name }: Props) {
   const { colorMode } = useColorMode();
 
   const { data } = useGetByTypeQuery(client, { type: name });
-  // console.log(data);
   const search = () => {
     router.push({
       pathname: `/search/${name}`,

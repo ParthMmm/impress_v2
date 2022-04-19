@@ -8,7 +8,7 @@ import {
   useColorMode,
 } from '@chakra-ui/react';
 import client from '@/app/request-client';
-// import { useGetByLubeQuery } from '@/generates';
+import { useGetByLubeQuery } from 'generates';
 import { useRouter } from 'next/router';
 
 type Props = {
@@ -19,8 +19,7 @@ function Lube({ name }: Props) {
   const router = useRouter();
   const { colorMode } = useColorMode();
 
-  // const { data } = useGetByLubeQuery(client, { lube: name });
-  // console.log(data);
+  const { data } = useGetByLubeQuery(client, { lube: name });
   const search = () => {
     router.push({
       pathname: `/search/${name}`,
